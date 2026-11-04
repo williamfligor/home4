@@ -104,10 +104,6 @@ url = "https://releases.herdr.dev/app/{{ version }}/herdr-app-macos-aarch64.tar.
 
 [dotfiles]
 
-[dotfiles."~/Library/KeyBindings"]
-source = "dot-Library/KeyBindings"
-mode = "symlink"
-
 [dotfiles."~/.config/ghostty"]
 source = "dot-config/ghostty"
 mode = "symlink"

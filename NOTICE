@@ -26,9 +26,17 @@ header block at the top of each, naming the upstream path and commit; the code
 below those headers is unmodified. Each file carries the same header, so the
 attribution travels with the file even when it is copied out of this repository.
 
-## Not third-party
+## MIT
 
-conf.d/ai/dot-pi/agent/agents/researcher.md carries no provenance marker and no
-upstream claim; it is treated as original work for this repository. If it is in
-fact derived from a third-party source, this NOTICE is incomplete and should be
-corrected.
+conf.d/ai/dot-pi/agent/agents/researcher.md is derived from
+https://github.com/nicobailon/pi-subagents/blob/main/agents/researcher.md at
+commit e3592bb (2026-10-09), which is MIT licensed; the licence as published by
+that repository is reproduced at LICENSES/pi-subagents-MIT.txt.
+
+SPDX-FileCopyrightText: 2026 Nico Bailon
+SPDX-License-Identifier: MIT
+
+It has been modified for this setup: the tool list and the gated-web-access
+rules differ, searches are one query per call, and the output format is a
+research brief with explicit gaps. The provenance and those changes are also
+recorded as comments in the file's frontmatter.

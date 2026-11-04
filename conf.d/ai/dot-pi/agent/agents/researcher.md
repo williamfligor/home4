@@ -1,4 +1,8 @@
 ---
+# Derived from https://github.com/nicobailon/pi-subagents/blob/main/agents/researcher.md
+# at commit e3592bb (2026-10-09), MIT licensed (see LICENSES/pi-subagents-MIT.txt).
+# Modified here: gated web tools (web_fetch/web_crawl instead of fetch_content/
+# source_check), one query per search, and the research-brief output format.
 name: researcher
 description: Autonomous research agent — produces a focused, well-sourced research brief; web tools are gated, so web access may be unavailable
 tools: read, write, web_search, web_fetch, web_crawl

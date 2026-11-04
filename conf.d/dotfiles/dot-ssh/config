@@ -1,0 +1,19 @@
+# vi: ft=sshconfig
+CanonicalizeHostname yes
+
+# --------------------- Generic -------------------
+
+Host nas
+    User will
+    HostName 10.0.0.6
+
+Host dev
+    User will
+    HostName 10.0.0.194
+
+# --------------------- Persist -------------------
+
+Host *
+    ServerAliveInterval 5
+    ServerAliveCountMax 3
+    GSSAPIAuthentication no

@@ -1,0 +1,24 @@
+# Herdr UI overrides. Saved changes reload automatically.
+# Unset keys inherit config-gpui.toml; tables merge key by key.
+
+# New installs start with the roomy rounded sidebar. Remove this line for
+# the managed default, or pick another layout listed in config-gpui.toml.
+layout = "normal"
+theme = "iTerm2 Solarized Light"
+confirm_close_pane = false
+contrast = "standard"
+
+[terminal]
+size = 12.0
+padding_x = 0
+family = "JetBrainsMono Nerd Font Mono"
+
+[keybindings]
+previous_workspace = "cmd-["
+next_workspace = "cmd-]"
+
+# Pass Shift-Enter through unchanged instead of Herdr's default rewrite to
+# Alt-Enter (Esc CR), so apps using the kitty keyboard protocol (pi) get a real
+# newline binding.
+[pane_keys]
+"shift-enter" = ""

@@ -1,0 +1,109 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Global mise configuration for williamfligor/home4.
+#
+# install.sh clones this repo into $MISE_CONFIG_DIR (~/.config/mise), so this
+# file is the global config and relative sources resolve against the clone.
+#
+# Tools and their dotfiles live in self-contained bundles under conf.d/: each
+# folder holds a mise.toml plus the files it configures, and relative sources
+# resolve inside the folder. A bundle can also hold mise.<env>.toml for
+# env-scoped bits (macOS apps, Termux). Fragments load *before* this file, so
+# this file only carries global settings and tools that have no config.
+#
+#   conf.d/ai        pi + agent skills (+ [bootstrap.repos])
+#   conf.d/bat       bat
+#   conf.d/dotfiles  ~/.dircolors, ~/.ssh/config, ~/.local/bin
+#   conf.d/git       delta + difftastic + git config
+#   conf.d/herdr     herdr-app + herdr/hc (window, TUI and core)
+#   conf.d/macos     macOS .apps + macOS-only dotfiles (mise.macos.toml)
+#   conf.d/nvim      neovim
+#   conf.d/termux    ~/.termux (mise.android.toml)
+#   conf.d/tmux      tmux
+#   conf.d/yazi      yazi
+#   conf.d/zellij    zellij
+#   conf.d/zsh       zsh + prompt + plugins
+#
+#   mise.linux.toml    Linux (auto_env) — placeholder, keep empty
+#   .miserc.toml       early-init: auto_env
+#
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Floor for `mise bootstrap --adopt`. Do not lower.
+min_version = "2026.9.14"
+
+[settings]
+go_set_gobin = true
+always_keep_download = true
+dotfiles.default_mode = "symlink"
+self_update.minimum_release_age = "0s"
+
+# ── Tools (shared across macOS / Linux / Termux) ─────────────────────────────
+# Tools that configure something live in their conf.d bundle; this list is the
+# rest.
+[tools]
+# Runtimes
+go = { version = "latest", lazy = true, lazy_bins = ["go", "gofmt"] }
+node = "lts"
+rust = { version = "latest", lazy = true }
+uv = "latest"
+
+# Shell & terminal
+eza = "latest"
+fd = "latest"
+fzf = "latest"
+ripgrep = "latest"
+
+# Development
+ast-grep = { version = "latest", lazy = true }
+# Repo-wide checks (prek.toml): the hook runner plus the tools its hooks call
+# through mise. They live here rather than in a bundle so a plain project
+# checkout (CI) resolves them too. Every hook is `language = "mise"`, so this
+# stays the only place versions are pinned.
+prek = { version = "latest", lazy = true, lazy_bins = ["prek"] }
+"npm:prettier" = { version = "latest", lazy = true, lazy_bins = ["prettier"] }
+"aqua:koalaman/shellcheck" = { version = "latest", lazy = true, lazy_bins = ["shellcheck"] }
+"aqua:astral-sh/ruff" = { version = "latest", lazy = true, lazy_bins = ["ruff"] }
+glab = { version = "latest", lazy = true }
+gh = "latest"
+# Forgejo's own CLI (fj). Codeberg releases ship Linux + Windows only, no macOS
+# assets, so the os guard keeps macOS machines from trying to install it.
+"forgejo:forgejo-contrib/forgejo-cli" = { version = "latest", lazy = true, lazy_bins = [
+  "fj",
+], os = [
+  "linux",
+] }
+lazygit = "latest"
+yq = "latest"
+"antigravity-cli" = { version = "latest", lazy = true }
+"github:simeji/jid" = { version = "latest", lazy = true, lazy_bins = ["jid"] }
+"github:tree-sitter/tree-sitter" = { version = "latest", lazy = true, lazy_bins = [
+  "tree-sitter",
+] }
+"npm:@tobilu/qmd" = { version = "latest", lazy = true, lazy_bins = [
+  "qmd",
+], npm_args = "--ignore-scripts=false" }
+
+# DevOps & containers
+dive = { version = "latest", lazy = true }
+lazydocker = { version = "latest", lazy = true }
+
+# Documentation & writing
+pandoc = { version = "latest", lazy = true }
+"github:charmbracelet/glow" = "latest"
+"github:tldr-pages/tlrc" = "latest"
+"go:github.com/flexphere/gaze/cmd/gaze" = { version = "latest", lazy = true, lazy_bins = [
+  "gaze",
+] }
+
+# Network & diagnostics
+"github:fujiapple852/trippy" = { version = "latest", lazy = true, lazy_bins = [
+  "trip",
+] }
+"github:ramonvermeulen/whosthere" = { version = "latest", lazy = true, lazy_bins = [
+  "whosthere",
+] }
+bun = "latest"
+
+# ── Environment ──────────────────────────────────────────────────────────────
+[env]
+FJ_FALLBACK_HOST = "https://git.3r3.net"

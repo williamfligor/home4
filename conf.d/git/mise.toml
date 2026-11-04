@@ -1,0 +1,9 @@
+# Git is the system binary; these are the diff/pager tools we point it at.
+
+[tools]
+delta = "latest"
+difftastic = { version = "latest", lazy = true }
+
+[dotfiles]
+"~/.config/git" = { source = "dot-config/git", mode = "symlink" }
+"~/.gitconfig" = { source = "dot-gitconfig", mode = "symlink" }

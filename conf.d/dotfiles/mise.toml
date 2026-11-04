@@ -1,0 +1,6 @@
+# $HOME-root odds and ends that don't pair with a specific tool.
+
+[dotfiles]
+"~/.dircolors" = { source = "dot-dircolors", mode = "symlink" }
+"~/.local/bin" = { source = "dot-local/bin", mode = "symlink-each" }
+"~/.ssh/config" = { source = "dot-ssh/config", mode = "symlink" }

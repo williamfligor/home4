@@ -1,0 +1,5 @@
+[tools]
+neovim = "latest"
+
+[dotfiles]
+"~/.config/nvim" = { source = "dot-config/nvim", mode = "symlink-each" }

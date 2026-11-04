@@ -1,0 +1,8 @@
+# mise early-init — loaded before mise.toml and the platform env files.
+#
+# auto_env controls config *discovery*, so it must be set here or in the
+# environment; setting it in mise.toml is too late. mise does not yet honour it
+# in every context, so ~/.config/zsh/env.sh also exports MISE_AUTO_ENV=true.
+
+[settings]
+auto_env = true

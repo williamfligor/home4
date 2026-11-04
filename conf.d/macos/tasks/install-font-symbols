@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+#MISE description="Install Symbols Only Nerd Font (icon/prompt glyphs only)"
+set -euo pipefail
+
+# Nerd Fonts' symbol-only build: the private-use icon glyphs, no text glyphs.
+# Pairs with whatever text font you already use.
+URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip"
+DEST="$HOME/Library/Fonts"
+
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+
+echo "Downloading Symbols Only Nerd Font..."
+curl -fLo "$tmp/symbols.zip" "$URL"
+
+# Stage the archive so its README/LICENSE don't land in ~/Library/Fonts, which
+# is shared with fonts installed by hand.
+unzip -qo "$tmp/symbols.zip" "SymbolsNerdFont*.ttf" -d "$tmp/out"
+
+count=$(find "$tmp/out" -name '*.ttf' | wc -l | tr -d ' ')
+if [[ "$count" -eq 0 ]]; then
+  echo "install-font-symbols: no TTFs in the archive" >&2
+  exit 1
+fi
+
+mkdir -p "$DEST"
+cp "$tmp/out"/*.ttf "$DEST/"
+
+echo "Installed $count files into $DEST"

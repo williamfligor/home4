@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#MISE description="Install JetBrains Mono Nerd Font"
+set -euo pipefail
+
+# nerd-fonts ships the whole family as a flat .tar.xz (TTFs, plus OFL.txt and
+# README.md at the top level).
+URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz"
+DEST="$HOME/Library/Fonts"
+
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+
+echo "Downloading JetBrains Mono Nerd Font..."
+curl -fLo "$tmp/jetbrains-mono.tar.xz" "$URL"
+
+mkdir -p "$tmp/out"
+tar -xf "$tmp/jetbrains-mono.tar.xz" -C "$tmp/out"
+
+count=$(find "$tmp/out" -name '*.ttf' | wc -l | tr -d ' ')
+if [[ "$count" -eq 0 ]]; then
+  echo "install-font-jetbrains-mono: no TTFs in the archive" >&2
+  exit 1
+fi
+
+mkdir -p "$DEST"
+find "$tmp/out" -name '*.ttf' -exec cp {} "$DEST/" \;
+
+echo "Installed $count files into $DEST"

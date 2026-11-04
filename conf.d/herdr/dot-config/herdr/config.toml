@@ -1,0 +1,8 @@
+[ui]
+
+[ui.toast]
+delivery = "system"
+
+[theme]
+name = "solarized-light"
+auto_switch = false

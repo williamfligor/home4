@@ -1,0 +1,37 @@
+name: Build .Dockerfile
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Set up Docker BuildKit cache
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          # Config files drive the cached tool-install layer; the repo clone at
+          # ~/.config/mise mirrors the config layout (repo-root mise.toml plus
+          # the conf.d bundles; the tool-cache layer uses MISE_CONFIG_DIR).
+          key: buildx-${{ runner.os }}-${{ hashFiles('.Dockerfile', '.dockerignore', 'mise.toml', 'mise.linux.toml', '.miserc.toml', 'mise.lock', 'mise.macos.lock', 'conf.d/*/mise*.toml') }}
+          restore-keys: |
+            buildx-${{ runner.os }}-
+
+      - name: Build and test
+        run: bash .test.sh

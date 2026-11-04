@@ -1,0 +1,341 @@
+#!/usr/bin/env -S uv run --script
+#MISE description="Install macOS .app bundles from mise http: backend installs"
+#
+# /// script
+# requires-python = ">=3.10"
+# ///
+"""Install macOS .app bundles from mise http: backend installs.
+
+Usage:
+    install-macos-apps              # install every known app from mise
+    install-macos-apps http:ice     # install one app (postinstall mode)
+
+Extraction uses the macOS tool for each artifact type rather than Python's own,
+because a bundle's code signature depends on what those tools preserve:
+
+  .zip     unzip(1)      — Orca, Ice
+  .tar.gz  tar(1)/bsdtar — Herdr app (extended attributes, permissions)
+  .dmg     hdiutil(1)    — Ghostty, Rectangle, Stats, Herdr GPUI
+
+An APPS entry may set dest_name to install under a different name than the bundle
+ships with: herdr-gpui ships Herdr.app and is installed as "Herd GPUI.app", so it
+does not collide with herdr-app.
+
+The copy itself is always ditto(1) (resource forks, ACLs, signatures), and the
+quarantine flag is dropped so a notarized bundle launches without the
+"downloaded from the internet" prompt.
+"""
+
+import json
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+DEST = Path.home() / "Applications"
+MISE_DOWNLOADS = Path.home() / ".local/share/mise/downloads"
+
+# app_name is the bundle name inside the artifact (how it is found); dest_name,
+# when present, is the name installed in ~/Applications.
+APPS = {
+    "http:orca": {"install_type": "zip", "app_name": "Orca"},
+    "http:ice": {"install_type": "zip", "app_name": "Ice"},
+    "http:ghostty": {"install_type": "dmg", "app_name": "Ghostty"},
+    "http:rectangle": {"install_type": "dmg", "app_name": "Rectangle"},
+    "http:stats": {"install_type": "dmg", "app_name": "Stats"},
+    "http:herdr-gpui": {
+        "install_type": "dmg",
+        "app_name": "Herdr",
+        "dest_name": "Herdr GPUI",
+    },
+    "http:herdr-app": {"install_type": "tar", "app_name": "Herdr"},
+}
+
+
+def download_dir(tool_key: str, version: str) -> Path:
+    """Where mise keeps the raw artifact (always_keep_download)."""
+    return MISE_DOWNLOADS / tool_key.replace(":", "-") / version
+
+
+def find_bundle(path: Path, app_name: str) -> Path | None:
+    """Find the .app at path, at path/<app_name>.app, or the first .app inside."""
+    if (path / "Contents" / "Info.plist").is_file():
+        return path
+    named = path / f"{app_name}.app"
+    if named.is_dir():
+        return named
+    for child in path.iterdir():
+        if child.is_dir() and child.name.endswith(".app"):
+            return child
+    return None
+
+
+def _staging_prefix(dest_name: str, kind: str) -> str:
+    return f"{dest_name.lower().replace(' ', '-')}-{kind}-"
+
+
+def install_bundle(src: Path, dest_name: str) -> None:
+    """Copy a .app into ~/Applications, replacing any previous copy.
+
+    ditto, not cp -R: bundle metadata has to survive. The copy is staged and then
+    swapped in, so a reinstall or upgrade replaces the bundle instead of nesting
+    inside it. If the swap fails between its two renames, the old bundle is put
+    back, so an app is never left missing.
+    """
+    dest = DEST / f"{dest_name}.app"
+    staged = DEST / f".{dest_name}.new.{os.getpid()}"
+    previous = DEST / f".{dest_name}.old.{os.getpid()}"
+
+    if staged.exists():
+        subprocess.run(["rm", "-rf", str(staged)], check=True)
+    subprocess.run(["ditto", str(src), str(staged)], check=True)
+    subprocess.run(
+        ["xattr", "-dr", "com.apple.quarantine", str(staged)],
+        capture_output=True,
+    )
+
+    if previous.exists():
+        subprocess.run(["rm", "-rf", str(previous)], check=True)
+    had_previous = False
+    if dest.exists():
+        os.rename(dest, previous)
+        had_previous = True
+    try:
+        os.rename(staged, dest)
+    except OSError:
+        if had_previous:
+            os.rename(previous, dest)
+        raise
+    if had_previous:
+        subprocess.run(["rm", "-rf", str(previous)], check=True)
+    print(f"  Installed {dest_name}.app")
+
+
+def detach(mount_point: str) -> bool:
+    """Detach a mounted image, retrying once with -force. True once unmounted."""
+    for extra in ([], ["-force"]):
+        try:
+            result = subprocess.run(
+                ["hdiutil", "detach", *extra, mount_point],
+                capture_output=True,
+            )
+        except OSError as exc:
+            print(f"  hdiutil detach failed: {exc}", file=sys.stderr)
+            continue
+        if result.returncode == 0:
+            return True
+    return False
+
+
+def install_from_dmg(install_path: Path, app_name: str, dest_name: str) -> bool:
+    """Mount the .dmg mise installed and copy the bundle out of it."""
+    images = list(install_path.glob("*.dmg"))
+    if not images:
+        print(f"  No .dmg file found in {install_path}", file=sys.stderr)
+        return False
+    dmg_path = images[0]
+
+    mount_point = tempfile.mkdtemp(prefix=_staging_prefix(dest_name, "dmg"))
+    attached = False
+    try:
+        subprocess.run(
+            ["hdiutil", "attach", str(dmg_path), "-nobrowse", "-mountpoint", mount_point],
+            check=True,
+            capture_output=True,
+        )
+        attached = True
+        mounted = Path(mount_point) / f"{app_name}.app"
+        if not mounted.is_dir():
+            print(f"  {app_name}.app not found in mounted image", file=sys.stderr)
+            return False
+        install_bundle(mounted, dest_name)
+        return True
+    except subprocess.CalledProcessError as exc:
+        print(f"  Failed to mount {dmg_path.name}: {exc}", file=sys.stderr)
+        return False
+    finally:
+        if attached and not detach(mount_point):
+            # Deleting the directory under a still-attached image would walk its
+            # (possibly read-only) contents; leave it for a human instead.
+            print(
+                f"  Warning: could not detach {mount_point}; leaving it mounted",
+                file=sys.stderr,
+            )
+        else:
+            shutil.rmtree(mount_point, ignore_errors=True)
+
+
+def install_from_zip(
+    tool_key: str, version: str, app_name: str, dest_name: str
+) -> bool:
+    """Extract the raw .zip with unzip(1) and install the bundle."""
+    dl_dir = download_dir(tool_key, version)
+    archives = list(dl_dir.glob("*.zip"))
+    if not archives:
+        print(f"  No .zip found in {dl_dir}", file=sys.stderr)
+        return False
+    zip_path = archives[0]
+
+    staging = tempfile.mkdtemp(prefix=_staging_prefix(dest_name, "zip"))
+    try:
+        subprocess.run(["unzip", "-q", str(zip_path), "-d", staging], check=True)
+        bundle = find_bundle(Path(staging), app_name)
+        if bundle is None:
+            print(f"  {app_name}.app not found in extracted zip", file=sys.stderr)
+            return False
+        install_bundle(bundle, dest_name)
+        return True
+    except subprocess.CalledProcessError as exc:
+        print(f"  Failed to extract {zip_path.name}: {exc}", file=sys.stderr)
+        return False
+    finally:
+        shutil.rmtree(staging, ignore_errors=True)
+
+
+def install_from_tar(
+    tool_key: str, version: str, app_name: str, install_path: Path, dest_name: str
+) -> bool:
+    """Extract the raw .tar.gz with tar(1) and install the bundle.
+
+    bsdtar restores extended attributes and permissions, so the bundle keeps the
+    signature it shipped with. When the raw download is gone, the tree mise
+    already unpacked at install_path is used instead.
+    """
+    dl_dir = download_dir(tool_key, version)
+    archives = sorted(dl_dir.glob("*.tar.gz")) + sorted(dl_dir.glob("*.tgz"))
+    if not archives:
+        bundle = find_bundle(install_path, app_name)
+        if bundle is None:
+            print(
+                f"  No .tar.gz in {dl_dir} and no {app_name}.app in {install_path}",
+                file=sys.stderr,
+            )
+            return False
+        install_bundle(bundle, dest_name)
+        return True
+    tar_path = archives[0]
+
+    staging = tempfile.mkdtemp(prefix=_staging_prefix(dest_name, "tar"))
+    try:
+        subprocess.run(["tar", "-xzf", str(tar_path), "-C", staging], check=True)
+        bundle = find_bundle(Path(staging), app_name)
+        if bundle is None:
+            print(f"  {app_name}.app not found in extracted tarball", file=sys.stderr)
+            return False
+        install_bundle(bundle, dest_name)
+        return True
+    except subprocess.CalledProcessError as exc:
+        print(f"  Failed to extract {tar_path.name}: {exc}", file=sys.stderr)
+        return False
+    finally:
+        shutil.rmtree(staging, ignore_errors=True)
+
+
+def install_by_type(info: dict, tool_key: str, install_path: Path, version: str) -> bool:
+    """Dispatch one app on the artifact type declared in APPS."""
+    app_name = info["app_name"]
+    dest_name = info.get("dest_name", app_name)
+    kind = info["install_type"]
+    if kind == "dmg":
+        return install_from_dmg(install_path, app_name, dest_name)
+    if kind == "tar":
+        return install_from_tar(tool_key, version, app_name, install_path, dest_name)
+    return install_from_zip(tool_key, version, app_name, dest_name)
+
+
+def pick_current(entries: list[dict]) -> dict | None:
+    """Pick the entry mise treats as current from `mise ls --json`.
+
+    That output lists every installed version and its order is not the active
+    one — a stale build can come first. Prefer the entry mise marks active, then
+    the one the config requests, then the newest (listed last).
+    """
+    if not entries:
+        return None
+    for entry in entries:
+        if entry.get("active"):
+            return entry
+    for entry in entries:
+        if entry.get("requested_version"):
+            return entry
+    return entries[-1]
+
+
+def install_one(tool_key: str) -> bool:
+    """Install a single app, reading its path from MISE_TOOL_INSTALL_PATH."""
+    info = APPS.get(tool_key)
+    if info is None:
+        print(f"Unknown tool: {tool_key}", file=sys.stderr)
+        print(f"Known tools: {', '.join(sorted(APPS))}", file=sys.stderr)
+        return False
+
+    install_path_str = os.environ.get("MISE_TOOL_INSTALL_PATH", "")
+    if not install_path_str:
+        print(f"MISE_TOOL_INSTALL_PATH not set — cannot install {tool_key}", file=sys.stderr)
+        return False
+    install_path = Path(install_path_str)
+    if not install_path.is_dir():
+        print(f"Install path missing: {install_path}", file=sys.stderr)
+        return False
+
+    version = install_path.name
+    dest_name = info.get("dest_name", info["app_name"])
+    print(f"Installing {dest_name} (version {version})...")
+    return install_by_type(info, tool_key, install_path, version)
+
+
+def install_all() -> int:
+    """Install every known app whose mise install directory is present."""
+    DEST.mkdir(parents=True, exist_ok=True)
+
+    try:
+        listed = json.loads(subprocess.check_output(["mise", "ls", "--json"], text=True))
+    except (subprocess.CalledProcessError, json.JSONDecodeError) as exc:
+        print(f"Failed to list mise tools: {exc}", file=sys.stderr)
+        return 1
+
+    installed = 0
+    for tool_key, info in APPS.items():
+        dest_name = info.get("dest_name", info["app_name"])
+        entries = listed.get(tool_key)
+        if not entries:
+            print(f"{dest_name}: not installed in mise, skipping")
+            continue
+        entry = pick_current(entries)
+        if entry is None:
+            print(f"{dest_name}: not installed in mise, skipping")
+            continue
+        install_path_str = entry.get("install_path", "")
+        if not install_path_str:
+            print(f"{dest_name}: not yet installed (mise where would fetch it)")
+            continue
+        install_path = Path(install_path_str)
+        if not install_path.is_dir():
+            print(f"{dest_name}: install path missing, skipping")
+            continue
+
+        version = install_path.name
+        print(f"Installing {dest_name} (version {version})...")
+        if not entry.get("active"):
+            print(
+                f"  Warning: mise does not report {version} as the active "
+                f"version of {tool_key}",
+                file=sys.stderr,
+            )
+        if install_by_type(info, tool_key, install_path, version):
+            installed += 1
+
+    print(f"=== {installed} macOS app(s) installed ===")
+    return 0 if installed > 0 else 1
+
+
+def main() -> int:
+    if len(sys.argv) > 1:
+        return 0 if install_one(sys.argv[1]) else 1
+    return install_all()
+
+
+if __name__ == "__main__":
+    sys.exit(main())

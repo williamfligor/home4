@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Update pi and extensions"
+set -euxo pipefail
+
+# Keep the npm package under mise's control: `pi update` would update the package
+# behind mise's back and drift from mise.lock, so go through mise instead.
+mise up "npm:@earendil-works/pi-coding-agent"
+
+# Extension resolution has to happen with the pi just installed, not the version
+# this task started with, so re-resolve through `mise exec`.
+mise exec -- pi update --extensions

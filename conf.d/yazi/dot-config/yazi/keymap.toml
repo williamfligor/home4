@@ -1,0 +1,7 @@
+# Manager bindings the defaults do not provide. `on` is a list for a chord and a
+# string for a single key; prepending makes the binding win over the default maps.
+
+# g r — jump to the root of the current Git repository, from any subdirectory.
+[[manager.prepend_keymap]]
+on = [ "g", "r" ]
+run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"'

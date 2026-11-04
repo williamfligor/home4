@@ -1,0 +1,34 @@
+home4 — dotfiles and tooling
+Copyright (c) 2025 Will
+
+This repository is distributed under the MIT Licence; see LICENSE.md.
+
+It redistributes the files listed below, copied from
+https://github.com/mitsuhiko/agent-stuff and licensed under the Apache License,
+Version 2.0. A copy of that licence travels with them at
+LICENSES/Apache-2.0.txt.
+
+SPDX-FileCopyrightText: Armin Ronacher
+SPDX-License-Identifier: Apache-2.0
+
+  file                                                  upstream path                      commit
+  ----------------------------------------------------  ---------------------------------  ---------
+  conf.d/ai/dot-pi/agent/extensions/answer.ts           extensions/answer.ts               a3f8ab1
+  conf.d/ai/dot-pi/agent/extensions/notify.ts           extensions/notify.ts               a3f8ab1
+  conf.d/ai/dot-pi/agent/extensions/review.ts           extensions/review.ts               a3f8ab1
+  conf.d/ai/dot-pi/agent/extensions/uv.ts               pi-extensions/uv.ts                401fa86
+  conf.d/ai/dot-pi/agent/extensions/whimsical.ts        extensions/whimsical.ts            a3f8ab1
+
+The upstream repository ships no NOTICE file, so none is reproduced here.
+
+The only change made when vendoring these files is the addition of the SPDX
+header block at the top of each, naming the upstream path and commit; the code
+below those headers is unmodified. Each file carries the same header, so the
+attribution travels with the file even when it is copied out of this repository.
+
+## Not third-party
+
+conf.d/ai/dot-pi/agent/agents/researcher.md carries no provenance marker and no
+upstream claim; it is treated as original work for this repository. If it is in
+fact derived from a third-party source, this NOTICE is incomplete and should be
+corrected.

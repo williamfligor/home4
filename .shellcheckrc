@@ -1,0 +1,8 @@
+# shellcheck config, read by both the hook and manual runs.
+#
+# These two are deliberate here, not bugs:
+#   SC2016 — .test.sh and install.sh print literal `$(...)`/backtick text; the
+#            single quotes are the point, so it does not get expanded.
+#   SC1001 — a grep pattern uses `\s` meaning a literal 's'.
+# Everything else (warnings and errors) still fails the hook.
+disable=SC2016,SC1001

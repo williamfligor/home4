@@ -1,0 +1,5 @@
+[tools]
+bat = "latest"
+
+[dotfiles]
+"~/.config/bat" = { source = "dot-config/bat", mode = "symlink" }

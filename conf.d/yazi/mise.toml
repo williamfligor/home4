@@ -1,0 +1,5 @@
+[tools]
+yazi = "latest"
+
+[dotfiles]
+"~/.config/yazi" = { source = "dot-config/yazi", mode = "symlink" }

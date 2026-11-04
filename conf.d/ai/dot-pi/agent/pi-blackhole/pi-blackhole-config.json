@@ -1,0 +1,16 @@
+{
+  "compaction": "auto",
+  "compactionEngine": "blackhole",
+  "tailBehavior": "pi-default",
+  "showPreCompactionMessage": true,
+
+  "observerModel": { "provider": "opencode-go", "id": "mimo-v2.6-flash", "cooldownHours": 2 },
+  "reflectorModel": { "provider": "opencode-go", "id": "mimo-v2.6-flash", "cooldownHours": 2 },
+  "dropperModel": { "provider": "opencode-go", "id": "mimo-v2.6-flash", "cooldownHours": 2 },
+
+  "model": { "provider": "opencode-go", "id": "deepseek-v4.1-flash", "cooldownHours": 1 },
+
+  "sessionFallback": false,
+  "showWorkerNotifications": true,
+  "statusBar": false
+}

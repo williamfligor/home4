@@ -1,0 +1,32 @@
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  prek:
+    runs-on: ubuntu-latest
+    env:
+      # This repo IS the global mise config (install.sh clones it to
+      # ~/.config/mise), so point mise at the checkout: that is what loads the
+      # conf.d bundles and tasks/. Same trick as the tool-cache layer in
+      # .Dockerfile.
+      MISE_CONFIG_DIR: ${{ github.workspace }}
+      MISE_TRUSTED_CONFIG_PATHS: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: jdx/mise-action@v4
+        with:
+          install: false
+
+      # Only the hook tooling: the full tool set (go, rust, node, apps) is not
+      # needed to run checks. Keep this list in step with prek.toml's hooks.
+      - name: Install hook tools
+        run: mise install --yes prek prettier shellcheck ruff
+
+      - name: Run checks
+        run: mise run check

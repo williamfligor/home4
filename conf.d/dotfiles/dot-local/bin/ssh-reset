@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Recover from a wedged SSH session: force-kill the SSH clients and discard the
+# agent-forwarding sockets they leave in ~/.ssh.
+#
+# Matching is deliberately name-exact: a process that merely mentions "ssh" in
+# its arguments (an editor, a wrapper script) must survive.
+set -uo pipefail
+
+pkill -KILL -x ssh 2>/dev/null || true
+
+ssh_dir="$HOME/.ssh"
+[[ -d $ssh_dir ]] || exit 0
+
+# Top level only: socket-* entries sitting in host subdirectories are not ours.
+find "$ssh_dir" -mindepth 1 -maxdepth 1 -name 'socket-*' \
+	-exec rm -rf -- {} + 2>/dev/null || true

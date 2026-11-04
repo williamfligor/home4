@@ -1,0 +1,37 @@
+{
+  "defaultProvider": "opencode-go",
+  "defaultModel": "deepseek-v4.1-flash",
+  "theme": "light",
+  "enableSkillCommands": true,
+  "compaction": {
+    "enabled": true
+  },
+  "retry": {
+    "enabled": true,
+    "maxRetries": 99
+  },
+  "lastChangelogVersion": "2.0.0",
+  "packages": [
+    "npm:@ff-labs/pi-fff",
+    "npm:donsetch",
+    "npm:pi-blackhole",
+    "npm:pi-goal-x",
+    "npm:pi-rewind",
+    "npm:pi-subagents",
+    "npm:pi-vim"
+  ],
+  "defaultThinkingLevel": "high",
+  "hideThinkingBlock": true,
+  "enabledModels": [
+    "opencode-go/*",
+    "llama-cpp/*"
+  ],
+  "defaultTools": [
+    "+codemode"
+  ],
+  "showHardwareCursor": true,
+  "tuiMode": "regular",
+  "showCacheMissNotices": true,
+  "fullscreenExitOutput": "transcript",
+  "outputPad": 0
+}

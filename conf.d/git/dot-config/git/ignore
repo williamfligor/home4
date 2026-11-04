@@ -1,0 +1,6 @@
+# Ignore vim files:
+*~
+*.swp
+*.swo
+.pi
+nvim.log

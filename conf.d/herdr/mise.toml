@@ -1,0 +1,51 @@
+# Herdr: the app window (`herdr-app`, its home is `~/.config/herdr-app`) and the
+# TUI/daemon it replaced (`~/.config/herdr`). Both are driven here — the app
+# redraws itself from these files, so an edit lands in the window within a
+# second.
+#
+# The herdr-app entries are symlinks: the app writes settings and keys in place
+# when you change them from Settings or rebind a key, through the link, so the
+# edit shows up in the repo without a capture step. The two `~/.config/herdr`
+# TOMLs stay copies — that app rewrites them whole, and
+# `mise dotfiles add --changed` picks up its edits.
+#
+# `layouts/` and `themes/` are symlink-each, so the files the app manages there
+# (shipped `main.json`, an upgraded `atom-one-dark.json`, `layouts/.state/`
+# clicks) stay local and untracked. A mod gets an entry of its own rather than
+# the `mods/` folder: the app drops a `jsconfig.json` and `gpui-kit.d.ts` into
+# every mod folder, and those must not land in the repo.
+#
+# Not managed: `Herdr.app` updates itself, and a package manager's copy never
+# would.
+
+[tools]
+# The TUI/daemon generation: `herdr` and `herdr-core` (`hc`, the terminal
+# runtime coding agents run in). Releases live on releases.herdr.dev rather than
+# GitHub, so the http backend reads latest.json for the version and
+# manifest.json for the per-platform sha256 the lockfile pins. rename_exe gives
+# the shim the `hc` name; hc sees the mise store in its own path, so `hc update`
+# defers to `mise upgrade herdr-core`.
+herdr = { version = "latest", minimum_release_age = "0h" }
+"http:herdr-core" = {
+  version = "latest",
+  version_list_url = "https://releases.herdr.dev/core/latest.json",
+  version_json_path = ".version",
+  rename_exe = "hc",
+  checksum_url = "https://releases.herdr.dev/core/{{ version }}/manifest.json",
+  checksum_expr = '"sha256:" + fromJSON(body).targets[os + "-" + (arch == "x64" ? "x86_64" : "aarch64")].sha256',
+  platforms = {
+    linux-x64 = { url = "https://releases.herdr.dev/core/{{ version }}/herdr-core-linux-x86_64.tar.gz" },
+    linux-arm64 = { url = "https://releases.herdr.dev/core/{{ version }}/herdr-core-linux-aarch64.tar.gz" },
+    macos-x64 = { url = "https://releases.herdr.dev/core/{{ version }}/herdr-core-macos-x86_64.tar.gz" },
+    macos-arm64 = { url = "https://releases.herdr.dev/core/{{ version }}/herdr-core-macos-aarch64.tar.gz" },
+  },
+}
+
+[dotfiles]
+"~/.config/herdr-app/keys.json" = { source = "dot-herdr-app/keys.json", mode = "symlink" }
+"~/.config/herdr-app/settings.json" = { source = "dot-herdr-app/settings.json", mode = "symlink" }
+"~/.config/herdr-app/themes" = { source = "dot-herdr-app/themes", mode = "symlink-each" }
+"~/.config/herdr-app/layouts" = { source = "dot-herdr-app/layouts", mode = "symlink-each" }
+"~/.config/herdr-app/mods/space-folders" = { source = "dot-herdr-app/mods/space-folders", mode = "symlink-each" }
+"~/.config/herdr/config.toml" = { source = "dot-config/herdr/config.toml", mode = "copy" }
+"~/.config/herdr/config-gpui.local.toml" = { source = "dot-config/herdr/config-gpui.local.toml", mode = "copy" }

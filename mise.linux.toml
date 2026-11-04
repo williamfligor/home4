@@ -1,0 +1,13 @@
+# Linux-only config, auto-loaded by auto_env (`{os}` = linux).
+#
+# Baseline: glibc >= 2.39 (Ubuntu 24.04+ / Debian trixie+). yazi's release
+# binaries are built on Ubuntu 24.04 and will not start on older glibc
+# (bookworm / 22.04) — verified in the cutover test.
+#
+# Keep empty: mise has no android platform env and Termux may report os=linux,
+# so anything here also applies on Termux. Termux config goes in
+# conf.d/termux/mise.android.toml, selected via MISE_ENV=android.
+
+[tools]
+
+[dotfiles]

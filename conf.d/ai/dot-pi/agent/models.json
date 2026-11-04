@@ -1,0 +1,48 @@
+{
+    "providers": {
+        "llama-cpp": {
+            "baseUrl": "https://llama.3r3.net/v1",
+            "api": "openai-completions",
+            "apiKey": "none",
+            "models": [
+                {
+                    "id": "qwen3.6-27b",
+                    "name": "qwen3.6-27b",
+                    "compat": {
+                        "thinkingFormat": "qwen-chat-template"
+                    },
+                    "reasoning": false
+                },
+                {
+                    "id": "pi-reasoning",
+                    "name": "pi-reasoning",
+                    "compat": {
+                        "thinkingFormat": "qwen-chat-template"
+                    },
+                    "reasoning": true,
+                    "thinkingLevelMap": {
+                        "minimal": "1024",
+                        "low": "2048",
+                        "medium": "4096",
+                        "high": "8192",
+                        "xhigh": "16384"
+                    }
+                },
+                {
+                    "id": "gemma-4-12b",
+                    "reasoning": false
+                }
+            ]
+        },
+        "opencode-go": {
+            "modelOverrides": {
+                "deepseek-v4-flash": {
+                    "maxTokens": 131072
+                },
+                "deepseek-v4-pro": {
+                    "maxTokens": 131072
+                }
+            }
+        }
+    }
+}

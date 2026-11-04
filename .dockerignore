@@ -1,0 +1,8 @@
+.git
+.gitignore
+.pi
+.pi-subagents
+node_modules
+__pycache__
+.mypy_cache
+*.pyc

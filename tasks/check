@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#MISE description="Run repo-wide checks (prek)"
+set -euo pipefail
+
+# File tasks in the global config run from $HOME, so anchor on the repo: this
+# file lives in <repo>/tasks/.
+cd "$(dirname "$0")/.."
+
+# Hooks come from prek.toml, tools from mise.toml, so this needs no other
+# setup. Plain `prek run` only touches staged/changed files — that is what the
+# git hook installed by `prek install` runs.
+exec mise exec -- prek run --all-files "$@"

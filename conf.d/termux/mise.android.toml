@@ -1,0 +1,6 @@
+# Termux/Android config. mise has no android platform env (docs list only
+# linux/macos/windows) and Termux may report os=linux, so this file loads only
+# via an explicit MISE_ENV=android set on the Termux machine itself.
+
+[dotfiles]
+"~/.termux" = { source = "dot-termux", mode = "symlink" }

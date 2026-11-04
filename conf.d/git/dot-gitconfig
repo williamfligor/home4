@@ -1,0 +1,14 @@
+# vi: ft=gitconfig
+[user]
+	email = williamtfligor@gmail.com
+	name = William Fligor
+[delta]
+    light = true
+[branch]
+    sort = -committerdate
+
+# Static single-user helper. macOS ships osxkeychain (Apple git only) and Linux
+# ships none — a static `store` matches today's Linux behavior everywhere and
+# avoids password prompts on fetch.
+[credential]
+    helper = store

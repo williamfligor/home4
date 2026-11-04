@@ -1,0 +1,88 @@
+# Repo-wide checks, run by prek (pre-commit compatible) through mise.
+#   mise run check        every tracked file (CI)
+#   prek run              staged/changed files only (git hook, after `prek install`)
+#   prek run --all-files  same as `mise run check`
+#
+# Hooks use `language = "mise"`, so tools come from mise.toml and the conf.d
+# bundles — mise stays the only place versions are pinned.
+#:schema https://www.schemastore.org/prek.json
+
+default_install_hook_types = ["pre-commit"]
+
+[[repos]]
+repo = "builtin"
+hooks = [
+  { id = "check-added-large-files" },
+  { id = "check-case-conflict" },
+  { id = "check-executables-have-shebangs" },
+  { id = "check-json" },
+  { id = "check-merge-conflict" },
+  { id = "check-shebang-scripts-are-executable" },
+  # mise accepts TOML 1.1 multiline inline tables; the 1.0 parsers (this hook,
+  # taplo) reject them, and every mise command already parses these files, so
+  # validating them here would only produce false failures.
+  { id = "check-toml", exclude = '(^|/)mise[^/]*\.toml$' },
+  { id = "check-yaml" },
+  { id = "destroyed-symlinks" },
+  { id = "detect-private-key" },
+  # App-owned files, written by their own code as `JSON.stringify(x, null, 2)`:
+  # pi's SettingsManager (settings.json, and it omits the final newline) and
+  # pi-blackhole's saveUnifiedConfig, which is what the settings TUI calls.
+  # Prettier cannot reproduce that byte for byte — it wraps long arrays and the
+  # EOF fixer adds the newline pi leaves off — so every app write would show up
+  # as a formatting diff. They are validated as JSON, never restyled.
+  {
+    id = "end-of-file-fixer",
+    exclude = '^conf\.d/ai/dot-pi/agent/(settings\.json|pi-blackhole/pi-blackhole-config\.json)$',
+  },
+  { id = "forbid-new-submodules" },
+  { id = "mixed-line-ending", args = ["--fix=lf"] },
+  { id = "trailing-whitespace" },
+]
+
+[[repos]]
+repo = "local"
+hooks = [
+  # Style lives in .prettierrc (4 spaces, 110 columns; YAML 2 spaces). Markdown
+  # keeps its existing line breaks: prettier's default proseWrap is "preserve".
+  {
+    id = "prettier",
+    name = "prettier",
+    language = "mise",
+    entry = "prettier --write",
+    types_or = ["ts", "json", "markdown", "yaml"],
+    # mise.lock is generated; the two JSON files belong to pi / pi-blackhole
+    # (see end-of-file-fixer above). herdr-app serializes its own JSON: 2-space
+    # indent, keys reordered per write, numbers as floats (`font_size: 11.0`),
+    # writing in place through the symlinks on every Settings or keybinding
+    # change — prettier would rewrite it and the app would rewrite it back.
+    # `layouts/` is the same serialization (a clone, then `layout.set`).
+    exclude = '^(mise\.(macos\.)?lock|conf\.d/ai/dot-pi/agent/(settings\.json|pi-blackhole/pi-blackhole-config\.json)|conf\.d/herdr/dot-herdr-app/((settings|keys)\.json|layouts/.+\.json))$',
+  },
+  # `bash` is the tag identify derives from the shebang, so this covers the
+  # extensionless task scripts and skips the .zsh files and the sourced
+  # dot-config/zsh/*.sh (they are zsh, which shellcheck cannot parse).
+  {
+    id = "shellcheck",
+    name = "shellcheck",
+    language = "mise",
+    entry = "shellcheck",
+    types = ["bash"],
+  },
+  # Style comes from ruff.toml at the repo root. `ruff check --fix` applies only
+  # the safe fixes; anything it leaves behind is a finding, not a formatting nit.
+  {
+    id = "ruff-format",
+    name = "ruff format",
+    language = "mise",
+    entry = "ruff format",
+    types = ["python"],
+  },
+  {
+    id = "ruff-check",
+    name = "ruff check",
+    language = "mise",
+    entry = "ruff check --fix --exit-non-zero-on-fix",
+    types = ["python"],
+  },
+]

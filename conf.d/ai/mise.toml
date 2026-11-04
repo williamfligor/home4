@@ -1,0 +1,20 @@
+# Pi coding agent and the agent skills it loads.
+# Herdr's own config lives in conf.d/herdr.
+
+[tools]
+"npm:@earendil-works/pi-coding-agent" = { version = "latest", minimum_release_age = "0s" }
+[dotfiles]
+"~/.agents/skills" = { source = "dot-agents/skills", mode = "symlink-each" }
+"~/.pi/agent" = { source = "dot-pi/agent", mode = "symlink-each" }
+
+# Tasks in a conf.d fragment run with this file's directory as the working
+# directory, so these paths are relative to conf.d/ai. prettier is declared in
+# the repo-root mise.toml (the prek hooks use it too); style is the repo-root
+# .prettierrc.
+[tasks."format:pi"]
+description = "Format the pi extensions"
+run = "prettier --write dot-pi/agent/extensions"
+
+[tasks."format:pi:check"]
+description = "Check pi extension formatting (CI)"
+run = "prettier --check dot-pi/agent/extensions"

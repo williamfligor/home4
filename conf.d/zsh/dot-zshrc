@@ -1,0 +1,77 @@
+# vi: ft=zsh
+# Interactive zsh startup. Order is the contract: nothing that can print or
+# prompt may run before the instant-prompt block, and the prompt theme loads last.
+
+# --- options and history ------------------------------------------------------
+setopt PROMPT_SUBST
+
+HISTFILE=${HISTFILE:-$HOME/.zsh_history}
+# In memory, and on disk (SAVEHIST). Both must be set before oh-my-zsh loads:
+# its lib/history.zsh only raises a value that is too low, so these win.
+HISTSIZE=1000000
+SAVEHIST=1000000
+
+case $TERM in
+  xterm-color | *-256color) color_prompt=yes ;;
+esac
+
+# --- powerlevel10k instant prompt --------------------------------------------
+# Keep this above anything that may need console input.
+_zsh_instant_prompt="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ -r $_zsh_instant_prompt ]]; then
+  source "$_zsh_instant_prompt"
+fi
+unset _zsh_instant_prompt
+
+# --- local fragments ---------------------------------------------------------
+# 10-mise-plugin.zsh defines mise-plugin(); 90-history-backup.zsh adds backups.
+for _zsh_fragment in "$HOME"/.zshrc.d/*.zsh(N); do
+  source "$_zsh_fragment"
+done
+unset _zsh_fragment
+
+# --- oh-my-zsh ---------------------------------------------------------------
+# The install is managed by mise; updates are disabled in favour of that.
+export ZSH="$HOME/.local/share/mise/installs/http-oh-my-zsh/latest"
+
+ZSH_THEME=""
+ENABLE_CORRECTION=true
+VI_MODE_DISABLE_CLIPBOARD=true
+plugins=(git history-substring-search vi-mode)
+
+zstyle ':omz:update' mode disabled
+
+source "$ZSH/oh-my-zsh.sh"
+
+# --- mise-managed plugins ----------------------------------------------------
+mise-plugin zsh-syntax-highlighting
+
+# vi-mode comes from oh-my-zsh; bind a single v to the command-line editor
+# instead of its default vv.
+bindkey -M vicmd 'v' edit-command-line
+
+mise-plugin zsh-you-should-use
+mise-plugin powerlevel10k powerlevel10k.zsh-theme
+
+if [[ -f $HOME/.p10k.zsh ]]; then
+  source "$HOME/.p10k.zsh"
+fi
+
+# oh-my-zsh turns correction prompts on; this shell does not want them.
+unsetopt correct_all
+
+# --- shared code -------------------------------------------------------------
+source "$HOME/.config/zsh/aliases.sh"
+source "$HOME/.config/zsh/functions.sh"
+
+if [[ -f $HOME/.local.sh ]]; then
+  source "$HOME/.local.sh"
+fi
+
+# --- key bindings ------------------------------------------------------------
+# ESC must not drop out of vi normal mode.
+bindkey -M vicmd '^[' undefined-key
+
+if (( $+commands[fzf] )); then
+  source <(fzf --zsh)
+fi

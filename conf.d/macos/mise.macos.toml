@@ -1,0 +1,123 @@
+# macOS-only configuration, auto-loaded by auto_env ({os} = macos).
+#
+# Each app keeps os = ["macos"] as a guard in case this file is ever merged
+# elsewhere, and hands off to `mise run install-macos-apps <tool>` (declared under
+# tasks/ in this bundle) through an absolute mise path, so it does not depend on
+# PATH. That task keeps its own app dict: add or remove an app in both places.
+
+[tools]
+
+[tools."http:orca"]
+version = "latest"
+version_list_url = "https://api.github.com/repos/stablyai/orca/releases/latest"
+version_json_path = ".tag_name"
+os = ["macos"]
+postinstall = "$HOME/.local/bin/mise run install-macos-apps http:orca"
+
+[tools."http:orca".platforms."macos-x64"]
+url = "https://github.com/stablyai/orca/releases/download/v{{ version }}/Orca-{{ version }}-mac.zip"
+
+[tools."http:orca".platforms."macos-arm64"]
+url = "https://github.com/stablyai/orca/releases/download/v{{ version }}/Orca-{{ version }}-arm64-mac.zip"
+
+[tools."http:ice"]
+version = "latest"
+version_list_url = "https://api.github.com/repos/jordanbaird/Ice/releases/latest"
+version_json_path = ".tag_name"
+os = ["macos"]
+postinstall = "$HOME/.local/bin/mise run install-macos-apps http:ice"
+
+[tools."http:ice".platforms."macos-x64"]
+url = "https://github.com/jordanbaird/Ice/releases/download/{{ version }}/Ice.zip"
+
+[tools."http:ice".platforms."macos-arm64"]
+url = "https://github.com/jordanbaird/Ice/releases/download/{{ version }}/Ice.zip"
+
+# The only app without a JSON release API: the download page is scraped instead.
+[tools."http:ghostty"]
+version = "latest"
+version_list_url = "https://ghostty.org/download"
+version_regex = 'Version <!-- -->(\d+\.\d+\.\d+)'
+os = ["macos"]
+postinstall = "$HOME/.local/bin/mise run install-macos-apps http:ghostty"
+
+[tools."http:ghostty".platforms."macos-x64"]
+url = "https://release.files.ghostty.org/{{ version }}/Ghostty.dmg"
+
+[tools."http:ghostty".platforms."macos-arm64"]
+url = "https://release.files.ghostty.org/{{ version }}/Ghostty.dmg"
+
+[tools."http:rectangle"]
+version = "latest"
+version_list_url = "https://api.github.com/repos/rxhanson/Rectangle/releases/latest"
+version_json_path = ".tag_name"
+os = ["macos"]
+postinstall = "$HOME/.local/bin/mise run install-macos-apps http:rectangle"
+
+[tools."http:rectangle".platforms."macos-x64"]
+url = "https://github.com/rxhanson/Rectangle/releases/download/v{{ version }}/Rectangle{{ version }}.dmg"
+
+[tools."http:rectangle".platforms."macos-arm64"]
+url = "https://github.com/rxhanson/Rectangle/releases/download/v{{ version }}/Rectangle{{ version }}.dmg"
+
+[tools."http:stats"]
+version = "latest"
+version_list_url = "https://api.github.com/repos/exelban/stats/releases/latest"
+version_json_path = ".tag_name"
+os = ["macos"]
+postinstall = "$HOME/.local/bin/mise run install-macos-apps http:stats"
+
+[tools."http:stats".platforms."macos-x64"]
+url = "https://github.com/exelban/stats/releases/download/v{{ version }}/Stats.dmg"
+
+[tools."http:stats".platforms."macos-arm64"]
+url = "https://github.com/exelban/stats/releases/download/v{{ version }}/Stats.dmg"
+
+[tools."http:herdr-gpui"]
+version = "latest"
+version_list_url = "https://api.github.com/repos/penso/herdr-gpui/releases/latest"
+version_json_path = ".tag_name"
+os = ["macos"]
+postinstall = "$HOME/.local/bin/mise run install-macos-apps http:herdr-gpui"
+
+[tools."http:herdr-gpui".platforms."macos-x64"]
+url = "https://github.com/penso/herdr-gpui/releases/download/v{{ version }}/Herdr-{{ version }}-universal-apple-darwin.dmg"
+
+[tools."http:herdr-gpui".platforms."macos-arm64"]
+url = "https://github.com/penso/herdr-gpui/releases/download/v{{ version }}/Herdr-{{ version }}-universal-apple-darwin.dmg"
+
+# Released through herdr's own service, with a per-architecture checksum taken
+# from the release manifest. There is no x64 artifact.
+[tools."http:herdr-app"]
+version = "latest"
+version_list_url = "https://releases.herdr.dev/app/latest.json"
+version_json_path = ".version"
+checksum_url = "https://releases.herdr.dev/app/{{ version }}/manifest.json"
+checksum_expr = '"sha256:" + fromJSON(body).targets["macos-" + (arch == "x64" ? "x86_64" : "aarch64")].sha256'
+os = ["macos"]
+postinstall = "$HOME/.local/bin/mise run install-macos-apps http:herdr-app"
+
+[tools."http:herdr-app".platforms."macos-arm64"]
+url = "https://releases.herdr.dev/app/{{ version }}/herdr-app-macos-aarch64.tar.gz"
+
+# macOS-only dotfiles.
+
+[dotfiles]
+
+[dotfiles."~/Library/KeyBindings"]
+source = "dot-Library/KeyBindings"
+mode = "symlink"
+
+[dotfiles."~/.config/ghostty"]
+source = "dot-config/ghostty"
+mode = "symlink"
+
+[dotfiles."~/.orca/keybindings.json"]
+source = "dot-orca/keybindings.json"
+mode = "symlink"
+
+# A conf.d folder is its own task root: includes resolve inside the folder and
+# replace its default task dirs.
+
+[task_config]
+includes = ["tasks"]

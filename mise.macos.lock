@@ -17,13 +17,13 @@ url = "https://release.files.ghostty.org/1.3.1/Ghostty.dmg"
 url = "https://release.files.ghostty.org/1.3.1/Ghostty.dmg"
 
 [[tools."http:herdr-app"]]
-version = "0.1.12"
+version = "0.1.13"
 backend = "http:herdr-app"
 specifiers = ["latest"]
 
 [tools."http:herdr-app"."platforms.macos-arm64"]
-checksum = "sha256:006a4f68409a79548d1aa6c5f99da8911b7d14910ef2ac6bd1a3dce634ca5d03"
-url = "https://releases.herdr.dev/app/0.1.12/herdr-app-macos-aarch64.tar.gz"
+checksum = "blake3:6fb82980566b3bc69fd4d9ffc9586d6fea4a2579c9e1114b17462f66f5a5ab43"
+url = "https://releases.herdr.dev/app/0.1.13/herdr-app-macos-aarch64.tar.gz"
 
 [[tools."http:ice"]]
 version = "0.11.12"

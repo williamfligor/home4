@@ -1267,67 +1267,67 @@ backend = "go:github.com/flexphere/gaze/cmd/gaze"
 specifiers = ["latest"]
 
 [[tools.herdr]]
-version = "0.9.4"
+version = "0.9.5"
 backend = "aqua:herdrdev/herdr"
 specifiers = ["latest"]
 
 [tools.herdr."platforms.linux-arm64"]
-checksum = "sha256:9511cb70982c1ef115f232058e7ed7cf9640aa5a2c0ca78934cefda3aeb093fd"
-url = "https://github.com/herdrdev/herdr/releases/download/v0.9.4/herdr-linux-aarch64"
-url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/637474390"
+checksum = "sha256:17d7536f2da50859523680ef279dffcac8e4a235f4e46fe8da6c2ec44141897c"
+url = "https://github.com/herdrdev/herdr/releases/download/v0.9.5/herdr-linux-aarch64"
+url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/640898231"
 
 [tools.herdr."platforms.linux-arm64-musl"]
-checksum = "sha256:9511cb70982c1ef115f232058e7ed7cf9640aa5a2c0ca78934cefda3aeb093fd"
-url = "https://github.com/herdrdev/herdr/releases/download/v0.9.4/herdr-linux-aarch64"
-url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/637474390"
+checksum = "sha256:17d7536f2da50859523680ef279dffcac8e4a235f4e46fe8da6c2ec44141897c"
+url = "https://github.com/herdrdev/herdr/releases/download/v0.9.5/herdr-linux-aarch64"
+url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/640898231"
 
 [tools.herdr."platforms.linux-x64"]
-checksum = "sha256:493304fbefb0ed0ea0455f373b47f48d24e8774bc7974f4c916ad2e937675b23"
-url = "https://github.com/herdrdev/herdr/releases/download/v0.9.4/herdr-linux-x86_64"
-url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/637474400"
+checksum = "sha256:14d9e8bc8b4a9e0118d77c32266f76d461f09b40342eb23752960bd89f59929d"
+url = "https://github.com/herdrdev/herdr/releases/download/v0.9.5/herdr-linux-x86_64"
+url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/640898235"
 
 [tools.herdr."platforms.linux-x64-baseline"]
-checksum = "sha256:493304fbefb0ed0ea0455f373b47f48d24e8774bc7974f4c916ad2e937675b23"
-url = "https://github.com/herdrdev/herdr/releases/download/v0.9.4/herdr-linux-x86_64"
-url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/637474400"
+checksum = "sha256:14d9e8bc8b4a9e0118d77c32266f76d461f09b40342eb23752960bd89f59929d"
+url = "https://github.com/herdrdev/herdr/releases/download/v0.9.5/herdr-linux-x86_64"
+url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/640898235"
 
 [tools.herdr."platforms.linux-x64-musl"]
-checksum = "sha256:493304fbefb0ed0ea0455f373b47f48d24e8774bc7974f4c916ad2e937675b23"
-url = "https://github.com/herdrdev/herdr/releases/download/v0.9.4/herdr-linux-x86_64"
-url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/637474400"
+checksum = "sha256:14d9e8bc8b4a9e0118d77c32266f76d461f09b40342eb23752960bd89f59929d"
+url = "https://github.com/herdrdev/herdr/releases/download/v0.9.5/herdr-linux-x86_64"
+url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/640898235"
 
 [tools.herdr."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:493304fbefb0ed0ea0455f373b47f48d24e8774bc7974f4c916ad2e937675b23"
-url = "https://github.com/herdrdev/herdr/releases/download/v0.9.4/herdr-linux-x86_64"
-url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/637474400"
+checksum = "sha256:14d9e8bc8b4a9e0118d77c32266f76d461f09b40342eb23752960bd89f59929d"
+url = "https://github.com/herdrdev/herdr/releases/download/v0.9.5/herdr-linux-x86_64"
+url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/640898235"
 
 [tools.herdr."platforms.macos-arm64"]
-checksum = "sha256:ea20bfff9cb8c83a996081c926e6ff9370de8e543baa859bca48d19175d895ff"
-url = "https://github.com/herdrdev/herdr/releases/download/v0.9.4/herdr-macos-aarch64"
-url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/637474389"
+checksum = "sha256:fb77c2232a05a8035421382c894392f4174e4e38a18e48af3dd0290157c3a7e2"
+url = "https://github.com/herdrdev/herdr/releases/download/v0.9.5/herdr-macos-aarch64"
+url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/640898230"
 
 [tools.herdr."platforms.macos-x64"]
-checksum = "sha256:2015ca1de3e93b84cdcccbfd94fbbd65dd56338cea4d3e57a8660e977a3bd700"
-url = "https://github.com/herdrdev/herdr/releases/download/v0.9.4/herdr-macos-x86_64"
-url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/637474391"
+checksum = "sha256:5fb0a908ec7f6745e3e245738b06bfad56c46391c391ab3c0955fbead01f1369"
+url = "https://github.com/herdrdev/herdr/releases/download/v0.9.5/herdr-macos-x86_64"
+url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/640898229"
 
 [tools.herdr."platforms.macos-x64-baseline"]
-checksum = "sha256:2015ca1de3e93b84cdcccbfd94fbbd65dd56338cea4d3e57a8660e977a3bd700"
-url = "https://github.com/herdrdev/herdr/releases/download/v0.9.4/herdr-macos-x86_64"
-url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/637474391"
+checksum = "sha256:5fb0a908ec7f6745e3e245738b06bfad56c46391c391ab3c0955fbead01f1369"
+url = "https://github.com/herdrdev/herdr/releases/download/v0.9.5/herdr-macos-x86_64"
+url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/640898229"
 
 [tools.herdr."platforms.windows-x64"]
-checksum = "sha256:0e4ccb5cd7b6ca464a69637cda66d3c93334ebc057c50c5878b8e89e1a20afee"
-url = "https://github.com/herdrdev/herdr/releases/download/v0.9.4/herdr-windows-x86_64.zip"
-url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/637474398"
+checksum = "sha256:d2c6c9c971c43a0bfdde8c692a9a1a7a45c3e4807cd01ae45662b4734fac1cbf"
+url = "https://github.com/herdrdev/herdr/releases/download/v0.9.5/herdr-windows-x86_64.zip"
+url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/640898234"
 
 [tools.herdr."platforms.windows-x64-baseline"]
-checksum = "sha256:0e4ccb5cd7b6ca464a69637cda66d3c93334ebc057c50c5878b8e89e1a20afee"
-url = "https://github.com/herdrdev/herdr/releases/download/v0.9.4/herdr-windows-x86_64.zip"
-url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/637474398"
+checksum = "sha256:d2c6c9c971c43a0bfdde8c692a9a1a7a45c3e4807cd01ae45662b4734fac1cbf"
+url = "https://github.com/herdrdev/herdr/releases/download/v0.9.5/herdr-windows-x86_64.zip"
+url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/640898234"
 
 [[tools."http:herdr-core"]]
-version = "0.1.16"
+version = "0.1.18"
 backend = "http:herdr-core"
 specifiers = ["latest"]
 
@@ -1335,40 +1335,40 @@ specifiers = ["latest"]
 rename_exe = "hc"
 
 [tools."http:herdr-core"."platforms.linux-arm64"]
-checksum = "sha256:b6573137d70baff24fb346c957a9879af6bdc4c641188cdf9e47a7b2a677bc92"
-url = "https://releases.herdr.dev/core/0.1.16/herdr-core-linux-aarch64.tar.gz"
+checksum = "sha256:cf33393cf950bb763734dc3e16610ab9daf8492391a4ef0de56026cd7f752853"
+url = "https://releases.herdr.dev/core/0.1.18/herdr-core-linux-aarch64.tar.gz"
 
 [tools."http:herdr-core"."platforms.linux-arm64-musl"]
-checksum = "sha256:b6573137d70baff24fb346c957a9879af6bdc4c641188cdf9e47a7b2a677bc92"
-url = "https://releases.herdr.dev/core/0.1.16/herdr-core-linux-aarch64.tar.gz"
+checksum = "sha256:cf33393cf950bb763734dc3e16610ab9daf8492391a4ef0de56026cd7f752853"
+url = "https://releases.herdr.dev/core/0.1.18/herdr-core-linux-aarch64.tar.gz"
 
 [tools."http:herdr-core"."platforms.linux-x64"]
-checksum = "sha256:58d6861176dc6fe905b58880d5bff07a9959be613a98e5d66b4583b04b6cfa45"
-url = "https://releases.herdr.dev/core/0.1.16/herdr-core-linux-x86_64.tar.gz"
+checksum = "sha256:5b2f97cb4b2a9d7a6b2cc5942628203ed9fbb7cc0c2b4b09ad8a6f5648e246b7"
+url = "https://releases.herdr.dev/core/0.1.18/herdr-core-linux-x86_64.tar.gz"
 
 [tools."http:herdr-core"."platforms.linux-x64-baseline"]
-checksum = "sha256:58d6861176dc6fe905b58880d5bff07a9959be613a98e5d66b4583b04b6cfa45"
-url = "https://releases.herdr.dev/core/0.1.16/herdr-core-linux-x86_64.tar.gz"
+checksum = "sha256:5b2f97cb4b2a9d7a6b2cc5942628203ed9fbb7cc0c2b4b09ad8a6f5648e246b7"
+url = "https://releases.herdr.dev/core/0.1.18/herdr-core-linux-x86_64.tar.gz"
 
 [tools."http:herdr-core"."platforms.linux-x64-musl"]
-checksum = "sha256:58d6861176dc6fe905b58880d5bff07a9959be613a98e5d66b4583b04b6cfa45"
-url = "https://releases.herdr.dev/core/0.1.16/herdr-core-linux-x86_64.tar.gz"
+checksum = "sha256:5b2f97cb4b2a9d7a6b2cc5942628203ed9fbb7cc0c2b4b09ad8a6f5648e246b7"
+url = "https://releases.herdr.dev/core/0.1.18/herdr-core-linux-x86_64.tar.gz"
 
 [tools."http:herdr-core"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:58d6861176dc6fe905b58880d5bff07a9959be613a98e5d66b4583b04b6cfa45"
-url = "https://releases.herdr.dev/core/0.1.16/herdr-core-linux-x86_64.tar.gz"
+checksum = "sha256:5b2f97cb4b2a9d7a6b2cc5942628203ed9fbb7cc0c2b4b09ad8a6f5648e246b7"
+url = "https://releases.herdr.dev/core/0.1.18/herdr-core-linux-x86_64.tar.gz"
 
 [tools."http:herdr-core"."platforms.macos-arm64"]
-checksum = "sha256:698d8f0c44f4e4b15fec174d52a39d57a014cfd71added44b53a0753b469d0fd"
-url = "https://releases.herdr.dev/core/0.1.16/herdr-core-macos-aarch64.tar.gz"
+checksum = "blake3:425bfa57a8e1294404a6470fa7d28617913718454c240ea30dcf8c494851899d"
+url = "https://releases.herdr.dev/core/0.1.18/herdr-core-macos-aarch64.tar.gz"
 
 [tools."http:herdr-core"."platforms.macos-x64"]
-checksum = "sha256:6af081cdb35c8612c5752d3f64c6a378e6a0313968b6d4fbc4c03c95691b2872"
-url = "https://releases.herdr.dev/core/0.1.16/herdr-core-macos-x86_64.tar.gz"
+checksum = "sha256:15a12b80e93ec4e074dbdb82fa8a66e529857abfbdfb456f94d5116dc438fedc"
+url = "https://releases.herdr.dev/core/0.1.18/herdr-core-macos-x86_64.tar.gz"
 
 [tools."http:herdr-core"."platforms.macos-x64-baseline"]
-checksum = "sha256:6af081cdb35c8612c5752d3f64c6a378e6a0313968b6d4fbc4c03c95691b2872"
-url = "https://releases.herdr.dev/core/0.1.16/herdr-core-macos-x86_64.tar.gz"
+checksum = "sha256:15a12b80e93ec4e074dbdb82fa8a66e529857abfbdfb456f94d5116dc438fedc"
+url = "https://releases.herdr.dev/core/0.1.18/herdr-core-macos-x86_64.tar.gz"
 
 [[tools."http:oh-my-zsh"]]
 version = "0.0.1"
@@ -1962,7 +1962,7 @@ url = "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15
 url_api = "https://api.github.com/repos/BurntSushi/ripgrep/releases/assets/478119643"
 
 [[tools.rust]]
-version = "1.99.0"
+version = "1.98.1"
 backend = "core:rust"
 specifiers = ["latest"]
 

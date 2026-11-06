@@ -25,18 +25,6 @@ specifiers = ["latest"]
 checksum = "sha256:006a4f68409a79548d1aa6c5f99da8911b7d14910ef2ac6bd1a3dce634ca5d03"
 url = "https://releases.herdr.dev/app/0.1.12/herdr-app-macos-aarch64.tar.gz"
 
-[[tools."http:herdr-gpui"]]
-version = "20261020.1"
-backend = "http:herdr-gpui"
-specifiers = ["latest"]
-
-[tools."http:herdr-gpui"."platforms.macos-arm64"]
-checksum = "blake3:8e011f46d040c5f0903fc6d564f38ff1e6aba6335790fc662ac99b0a559549e8"
-url = "https://github.com/penso/herdr-gpui/releases/download/v20261020.1/Herdr-20261020.1-universal-apple-darwin.dmg"
-
-[tools."http:herdr-gpui"."platforms.macos-x64"]
-url = "https://github.com/penso/herdr-gpui/releases/download/v20261020.1/Herdr-20261020.1-universal-apple-darwin.dmg"
-
 [[tools."http:ice"]]
 version = "0.11.12"
 backend = "http:ice"
@@ -76,6 +64,18 @@ url = "https://github.com/rxhanson/Rectangle/releases/download/v1.100/Rectangle1
 
 [tools."http:rectangle"."platforms.macos-x64"]
 url = "https://github.com/rxhanson/Rectangle/releases/download/v1.100/Rectangle1.100.dmg"
+
+[[tools."http:sheprd"]]
+version = "20261106.1"
+backend = "http:sheprd"
+specifiers = ["latest"]
+
+[tools."http:sheprd"."platforms.macos-arm64"]
+checksum = "blake3:c9ee7e6bb3074fc75f79c0d4d556f82c644ea6b7eb3aa82281cc25576e406178"
+url = "https://github.com/sheprd-labs/sheprd/releases/download/v20261106.1/Sheprd-20261106.1-universal-apple-darwin.dmg"
+
+[tools."http:sheprd"."platforms.macos-x64"]
+url = "https://github.com/sheprd-labs/sheprd/releases/download/v20261106.1/Sheprd-20261106.1-universal-apple-darwin.dmg"
 
 [[tools."http:stats"]]
 version = "3.0.15"

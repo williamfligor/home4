@@ -73,18 +73,18 @@ url = "https://github.com/exelban/stats/releases/download/v{{ version }}/Stats.d
 [tools."http:stats".platforms."macos-arm64"]
 url = "https://github.com/exelban/stats/releases/download/v{{ version }}/Stats.dmg"
 
-[tools."http:herdr-gpui"]
+[tools."http:sheprd"]
 version = "latest"
-version_list_url = "https://api.github.com/repos/penso/herdr-gpui/releases/latest"
+version_list_url = "https://api.github.com/repos/sheprd-labs/sheprd/releases/latest"
 version_json_path = ".tag_name"
 os = ["macos"]
-postinstall = "$HOME/.local/bin/mise run install-macos-apps http:herdr-gpui"
+postinstall = "$HOME/.local/bin/mise run install-macos-apps http:sheprd"
 
-[tools."http:herdr-gpui".platforms."macos-x64"]
-url = "https://github.com/penso/herdr-gpui/releases/download/v{{ version }}/Herdr-{{ version }}-universal-apple-darwin.dmg"
+[tools."http:sheprd".platforms."macos-x64"]
+url = "https://github.com/sheprd-labs/sheprd/releases/download/v{{ version }}/Sheprd-{{ version }}-universal-apple-darwin.dmg"
 
-[tools."http:herdr-gpui".platforms."macos-arm64"]
-url = "https://github.com/penso/herdr-gpui/releases/download/v{{ version }}/Herdr-{{ version }}-universal-apple-darwin.dmg"
+[tools."http:sheprd".platforms."macos-arm64"]
+url = "https://github.com/sheprd-labs/sheprd/releases/download/v{{ version }}/Sheprd-{{ version }}-universal-apple-darwin.dmg"
 
 # Released through herdr's own service, with a per-architecture checksum taken
 # from the release manifest. There is no x64 artifact.

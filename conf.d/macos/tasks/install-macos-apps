@@ -15,11 +15,10 @@ because a bundle's code signature depends on what those tools preserve:
 
   .zip     unzip(1)      — Orca, Ice
   .tar.gz  tar(1)/bsdtar — Herdr app (extended attributes, permissions)
-  .dmg     hdiutil(1)    — Ghostty, Rectangle, Stats, Herdr GPUI
+  .dmg     hdiutil(1)    — Ghostty, Rectangle, Stats, Sheprd
 
-An APPS entry may set dest_name to install under a different name than the bundle
-ships with: herdr-gpui ships Herdr.app and is installed as "Herd GPUI.app", so it
-does not collide with herdr-app.
+Sheprd and the Herdr app can sit side by side in ~/Applications because they
+ship under different bundle names (Sheprd.app, Herdr.app).
 
 The copy itself is always ditto(1) (resource forks, ACLs, signatures), and the
 quarantine flag is dropped so a notarized bundle launches without the
@@ -37,19 +36,15 @@ from pathlib import Path
 DEST = Path.home() / "Applications"
 MISE_DOWNLOADS = Path.home() / ".local/share/mise/downloads"
 
-# app_name is the bundle name inside the artifact (how it is found); dest_name,
-# when present, is the name installed in ~/Applications.
+# app_name is the bundle name inside the artifact (how it is found) and the name
+# it is installed under in ~/Applications.
 APPS = {
     "http:orca": {"install_type": "zip", "app_name": "Orca"},
     "http:ice": {"install_type": "zip", "app_name": "Ice"},
     "http:ghostty": {"install_type": "dmg", "app_name": "Ghostty"},
     "http:rectangle": {"install_type": "dmg", "app_name": "Rectangle"},
     "http:stats": {"install_type": "dmg", "app_name": "Stats"},
-    "http:herdr-gpui": {
-        "install_type": "dmg",
-        "app_name": "Herdr",
-        "dest_name": "Herdr GPUI",
-    },
+    "http:sheprd": {"install_type": "dmg", "app_name": "Sheprd"},
     "http:herdr-app": {"install_type": "tar", "app_name": "Herdr"},
 }
 
@@ -72,11 +67,11 @@ def find_bundle(path: Path, app_name: str) -> Path | None:
     return None
 
 
-def _staging_prefix(dest_name: str, kind: str) -> str:
-    return f"{dest_name.lower().replace(' ', '-')}-{kind}-"
+def _staging_prefix(app_name: str, kind: str) -> str:
+    return f"{app_name.lower().replace(' ', '-')}-{kind}-"
 
 
-def install_bundle(src: Path, dest_name: str) -> None:
+def install_bundle(src: Path, app_name: str) -> None:
     """Copy a .app into ~/Applications, replacing any previous copy.
 
     ditto, not cp -R: bundle metadata has to survive. The copy is staged and then
@@ -84,9 +79,9 @@ def install_bundle(src: Path, dest_name: str) -> None:
     inside it. If the swap fails between its two renames, the old bundle is put
     back, so an app is never left missing.
     """
-    dest = DEST / f"{dest_name}.app"
-    staged = DEST / f".{dest_name}.new.{os.getpid()}"
-    previous = DEST / f".{dest_name}.old.{os.getpid()}"
+    dest = DEST / f"{app_name}.app"
+    staged = DEST / f".{app_name}.new.{os.getpid()}"
+    previous = DEST / f".{app_name}.old.{os.getpid()}"
 
     if staged.exists():
         subprocess.run(["rm", "-rf", str(staged)], check=True)
@@ -110,7 +105,7 @@ def install_bundle(src: Path, dest_name: str) -> None:
         raise
     if had_previous:
         subprocess.run(["rm", "-rf", str(previous)], check=True)
-    print(f"  Installed {dest_name}.app")
+    print(f"  Installed {app_name}.app")
 
 
 def detach(mount_point: str) -> bool:
@@ -129,7 +124,7 @@ def detach(mount_point: str) -> bool:
     return False
 
 
-def install_from_dmg(install_path: Path, app_name: str, dest_name: str) -> bool:
+def install_from_dmg(install_path: Path, app_name: str) -> bool:
     """Mount the .dmg mise installed and copy the bundle out of it."""
     images = list(install_path.glob("*.dmg"))
     if not images:
@@ -137,7 +132,7 @@ def install_from_dmg(install_path: Path, app_name: str, dest_name: str) -> bool:
         return False
     dmg_path = images[0]
 
-    mount_point = tempfile.mkdtemp(prefix=_staging_prefix(dest_name, "dmg"))
+    mount_point = tempfile.mkdtemp(prefix=_staging_prefix(app_name, "dmg"))
     attached = False
     try:
         subprocess.run(
@@ -150,7 +145,7 @@ def install_from_dmg(install_path: Path, app_name: str, dest_name: str) -> bool:
         if not mounted.is_dir():
             print(f"  {app_name}.app not found in mounted image", file=sys.stderr)
             return False
-        install_bundle(mounted, dest_name)
+        install_bundle(mounted, app_name)
         return True
     except subprocess.CalledProcessError as exc:
         print(f"  Failed to mount {dmg_path.name}: {exc}", file=sys.stderr)
@@ -167,9 +162,7 @@ def install_from_dmg(install_path: Path, app_name: str, dest_name: str) -> bool:
             shutil.rmtree(mount_point, ignore_errors=True)
 
 
-def install_from_zip(
-    tool_key: str, version: str, app_name: str, dest_name: str
-) -> bool:
+def install_from_zip(tool_key: str, version: str, app_name: str) -> bool:
     """Extract the raw .zip with unzip(1) and install the bundle."""
     dl_dir = download_dir(tool_key, version)
     archives = list(dl_dir.glob("*.zip"))
@@ -178,14 +171,14 @@ def install_from_zip(
         return False
     zip_path = archives[0]
 
-    staging = tempfile.mkdtemp(prefix=_staging_prefix(dest_name, "zip"))
+    staging = tempfile.mkdtemp(prefix=_staging_prefix(app_name, "zip"))
     try:
         subprocess.run(["unzip", "-q", str(zip_path), "-d", staging], check=True)
         bundle = find_bundle(Path(staging), app_name)
         if bundle is None:
             print(f"  {app_name}.app not found in extracted zip", file=sys.stderr)
             return False
-        install_bundle(bundle, dest_name)
+        install_bundle(bundle, app_name)
         return True
     except subprocess.CalledProcessError as exc:
         print(f"  Failed to extract {zip_path.name}: {exc}", file=sys.stderr)
@@ -195,7 +188,7 @@ def install_from_zip(
 
 
 def install_from_tar(
-    tool_key: str, version: str, app_name: str, install_path: Path, dest_name: str
+    tool_key: str, version: str, app_name: str, install_path: Path
 ) -> bool:
     """Extract the raw .tar.gz with tar(1) and install the bundle.
 
@@ -213,18 +206,18 @@ def install_from_tar(
                 file=sys.stderr,
             )
             return False
-        install_bundle(bundle, dest_name)
+        install_bundle(bundle, app_name)
         return True
     tar_path = archives[0]
 
-    staging = tempfile.mkdtemp(prefix=_staging_prefix(dest_name, "tar"))
+    staging = tempfile.mkdtemp(prefix=_staging_prefix(app_name, "tar"))
     try:
         subprocess.run(["tar", "-xzf", str(tar_path), "-C", staging], check=True)
         bundle = find_bundle(Path(staging), app_name)
         if bundle is None:
             print(f"  {app_name}.app not found in extracted tarball", file=sys.stderr)
             return False
-        install_bundle(bundle, dest_name)
+        install_bundle(bundle, app_name)
         return True
     except subprocess.CalledProcessError as exc:
         print(f"  Failed to extract {tar_path.name}: {exc}", file=sys.stderr)
@@ -236,13 +229,12 @@ def install_from_tar(
 def install_by_type(info: dict, tool_key: str, install_path: Path, version: str) -> bool:
     """Dispatch one app on the artifact type declared in APPS."""
     app_name = info["app_name"]
-    dest_name = info.get("dest_name", app_name)
     kind = info["install_type"]
     if kind == "dmg":
-        return install_from_dmg(install_path, app_name, dest_name)
+        return install_from_dmg(install_path, app_name)
     if kind == "tar":
-        return install_from_tar(tool_key, version, app_name, install_path, dest_name)
-    return install_from_zip(tool_key, version, app_name, dest_name)
+        return install_from_tar(tool_key, version, app_name, install_path)
+    return install_from_zip(tool_key, version, app_name)
 
 
 def pick_current(entries: list[dict]) -> dict | None:
@@ -281,8 +273,8 @@ def install_one(tool_key: str) -> bool:
         return False
 
     version = install_path.name
-    dest_name = info.get("dest_name", info["app_name"])
-    print(f"Installing {dest_name} (version {version})...")
+    app_name = info["app_name"]
+    print(f"Installing {app_name} (version {version})...")
     return install_by_type(info, tool_key, install_path, version)
 
 
@@ -298,26 +290,26 @@ def install_all() -> int:
 
     installed = 0
     for tool_key, info in APPS.items():
-        dest_name = info.get("dest_name", info["app_name"])
+        app_name = info["app_name"]
         entries = listed.get(tool_key)
         if not entries:
-            print(f"{dest_name}: not installed in mise, skipping")
+            print(f"{app_name}: not installed in mise, skipping")
             continue
         entry = pick_current(entries)
         if entry is None:
-            print(f"{dest_name}: not installed in mise, skipping")
+            print(f"{app_name}: not installed in mise, skipping")
             continue
         install_path_str = entry.get("install_path", "")
         if not install_path_str:
-            print(f"{dest_name}: not yet installed (mise where would fetch it)")
+            print(f"{app_name}: not yet installed (mise where would fetch it)")
             continue
         install_path = Path(install_path_str)
         if not install_path.is_dir():
-            print(f"{dest_name}: install path missing, skipping")
+            print(f"{app_name}: install path missing, skipping")
             continue
 
         version = install_path.name
-        print(f"Installing {dest_name} (version {version})...")
+        print(f"Installing {app_name} (version {version})...")
         if not entry.get("active"):
             print(
                 f"  Warning: mise does not report {version} as the active "

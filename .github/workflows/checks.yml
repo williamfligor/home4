@@ -16,6 +16,13 @@ jobs:
       # .Dockerfile.
       MISE_CONFIG_DIR: ${{ github.workspace }}
       MISE_TRUSTED_CONFIG_PATHS: ${{ github.workspace }}
+      # `mise run` / `mise exec` install every configured tool they can see, so
+      # without these the "hook tooling only" steps below would still pull the
+      # whole non-lazy set (neovim, bun, herdr, zellij, yazi, …) to run four
+      # hooks. exec_auto_install is the one that does it; task.run_auto_install
+      # is turned off to match.
+      MISE_EXEC_AUTO_INSTALL: false
+      MISE_TASK_RUN_AUTO_INSTALL: false
     steps:
       - uses: actions/checkout@v4
 
@@ -23,10 +30,23 @@ jobs:
         with:
           install: false
 
-      # Only the hook tooling: the full tool set (go, rust, node, apps) is not
-      # needed to run checks. Keep this list in step with prek.toml's hooks.
+      # Only the hook tooling: the full tool set (go, rust, apps) is not needed
+      # to run checks. Keep this list in step with prek.toml's hooks.
+      #
+      # node gets its own step and goes first: prettier is `npm:prettier`, and
+      # mise does not install a tool's *install dependency* when the tool is
+      # named explicitly. `mise install prettier` fails with "requires
+      # configured install dependency 'node@lts', but its selected version is
+      # not installed" until node is on disk.
+      #
+      # The tools are named by their config ids (`npm:prettier`, the `aqua:`
+      # backends) rather than their bare bin names, so they resolve through
+      # mise.lock instead of picking `latest` afresh on every run.
+      - name: Install node (prettier's install dependency)
+        run: mise install --yes node
+
       - name: Install hook tools
-        run: mise install --yes prek prettier shellcheck ruff
+        run: mise install --yes prek "npm:prettier" "aqua:koalaman/shellcheck" "aqua:astral-sh/ruff"
 
       - name: Run checks
         run: mise run check

@@ -781,6 +781,65 @@ url = "https://github.com/cli/cli/releases/download/v2.102.0/gh_2.102.0_windows_
 url_api = "https://api.github.com/repos/cli/cli/releases/assets/599854760"
 provenance = "github-attestations"
 
+[[tools."github:Heretikio/herdr-wake"]]
+version = "0.1.0"
+backend = "github:Heretikio/herdr-wake"
+specifiers = ["latest"]
+
+[tools."github:Heretikio/herdr-wake"."platforms.linux-arm64"]
+checksum = "sha256:5ea1737c982f916e858744e0c935ff2a653e72c277e9913b6aa60064dd30698d"
+url = "https://github.com/Heretikio/herdr-wake/releases/download/v0.1.0/herdr-wake-0.1.0-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/Heretikio/herdr-wake/releases/assets/734070988"
+provenance = "github-attestations"
+
+[tools."github:Heretikio/herdr-wake"."platforms.linux-arm64-musl"]
+checksum = "sha256:5ea1737c982f916e858744e0c935ff2a653e72c277e9913b6aa60064dd30698d"
+url = "https://github.com/Heretikio/herdr-wake/releases/download/v0.1.0/herdr-wake-0.1.0-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/Heretikio/herdr-wake/releases/assets/734070988"
+provenance = "github-attestations"
+
+[tools."github:Heretikio/herdr-wake"."platforms.linux-x64"]
+checksum = "sha256:dab284f4f828b0491238bad7e8882293d047bb1cad653fb97e33029c15863b82"
+url = "https://github.com/Heretikio/herdr-wake/releases/download/v0.1.0/herdr-wake-0.1.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/Heretikio/herdr-wake/releases/assets/734071014"
+provenance = "github-attestations"
+
+[tools."github:Heretikio/herdr-wake"."platforms.linux-x64-baseline"]
+checksum = "sha256:dab284f4f828b0491238bad7e8882293d047bb1cad653fb97e33029c15863b82"
+url = "https://github.com/Heretikio/herdr-wake/releases/download/v0.1.0/herdr-wake-0.1.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/Heretikio/herdr-wake/releases/assets/734071014"
+provenance = "github-attestations"
+
+[tools."github:Heretikio/herdr-wake"."platforms.linux-x64-musl"]
+checksum = "sha256:dab284f4f828b0491238bad7e8882293d047bb1cad653fb97e33029c15863b82"
+url = "https://github.com/Heretikio/herdr-wake/releases/download/v0.1.0/herdr-wake-0.1.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/Heretikio/herdr-wake/releases/assets/734071014"
+provenance = "github-attestations"
+
+[tools."github:Heretikio/herdr-wake"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:dab284f4f828b0491238bad7e8882293d047bb1cad653fb97e33029c15863b82"
+url = "https://github.com/Heretikio/herdr-wake/releases/download/v0.1.0/herdr-wake-0.1.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/Heretikio/herdr-wake/releases/assets/734071014"
+provenance = "github-attestations"
+
+[tools."github:Heretikio/herdr-wake"."platforms.macos-arm64"]
+checksum = "sha256:e4c7d16979f0285751fd330d740b7ef0151486be585245c1a51516969cc71ce8"
+url = "https://github.com/Heretikio/herdr-wake/releases/download/v0.1.0/herdr-wake-0.1.0-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/Heretikio/herdr-wake/releases/assets/734070991"
+provenance = "github-attestations"
+
+[tools."github:Heretikio/herdr-wake"."platforms.macos-x64"]
+checksum = "sha256:822300a1dc518f8261fd9e5f9fdc2a7005ccb939d981cad89d48303941315313"
+url = "https://github.com/Heretikio/herdr-wake/releases/download/v0.1.0/herdr-wake-0.1.0-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/Heretikio/herdr-wake/releases/assets/734070990"
+provenance = "github-attestations"
+
+[tools."github:Heretikio/herdr-wake"."platforms.macos-x64-baseline"]
+checksum = "sha256:822300a1dc518f8261fd9e5f9fdc2a7005ccb939d981cad89d48303941315313"
+url = "https://github.com/Heretikio/herdr-wake/releases/download/v0.1.0/herdr-wake-0.1.0-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/Heretikio/herdr-wake/releases/assets/734070990"
+provenance = "github-attestations"
+
 [[tools."github:charmbracelet/glow"]]
 version = "3.0.0"
 backend = "github:charmbracelet/glow"

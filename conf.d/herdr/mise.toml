@@ -41,6 +41,27 @@ herdr = { version = "latest", minimum_release_age = "0h" }
   },
 }
 
+# herdr-wake resumes the agents that were running when the machine went down:
+# it starts `hc` at boot and gives each recovered terminal its session back.
+#
+# Its releases are GitHub assets, so autodetect needs no asset_pattern and mise
+# verifies the .sha256 and attestation itself. What it does need is a stable
+# path: herdr-wake records its own path as herdr-core's `shell` and refuses one
+# with a version segment (`.../herdr-wake/0.1.0/herdr-wake`), since `mise
+# upgrade` deletes that folder and every terminal would then wake to no shell.
+# It accepts a symlink from ~/.local/bin, so postinstall repoints that one.
+#
+# postinstall only relinks: `herdr-wake install` also rewrites herdr-core, up to
+# four agents and a boot service, so `mise run setup:herdr-wake` stays explicit.
+# Run `herdr-wake uninstall` before `mise uninstall`, or the leftover `shell`
+# path stops herdr-core starting any terminal.
+"github:Heretikio/herdr-wake" = {
+  version = "latest",
+  minimum_release_age = "0h",
+  os = ["macos", "linux"],
+  postinstall = "ln -sfn \"$MISE_TOOL_INSTALL_PATH/herdr-wake\" ~/.local/bin/herdr-wake",
+}
+
 [dotfiles]
 "~/.config/herdr-app/keys.json" = { source = "dot-herdr-app/keys.json", mode = "symlink" }
 "~/.config/herdr-app/settings.json" = { source = "dot-herdr-app/settings.json", mode = "symlink" }
@@ -49,3 +70,9 @@ herdr = { version = "latest", minimum_release_age = "0h" }
 "~/.config/herdr-app/mods/space-folders" = { source = "dot-herdr-app/mods/space-folders", mode = "symlink-each" }
 "~/.config/herdr/config.toml" = { source = "dot-config/herdr/config.toml", mode = "copy" }
 "~/.config/herdr/config-gpui.local.toml" = { source = "dot-config/herdr/config-gpui.local.toml", mode = "copy" }
+
+# Explicit because it edits other applications' files (see above), and `doctor`
+# exits 1 on a failed check.
+[tasks."setup:herdr-wake"]
+description = "Wire herdr-wake into herdr-core, the agents and the boot service"
+run = "herdr-wake install && herdr-wake doctor"

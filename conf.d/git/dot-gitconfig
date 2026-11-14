@@ -12,3 +12,5 @@
 # avoids password prompts on fetch.
 [credential]
     helper = store
+[pull]
+	rebase = true

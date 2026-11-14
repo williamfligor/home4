@@ -1327,7 +1327,7 @@ url = "https://github.com/herdrdev/herdr/releases/download/v0.9.5/herdr-windows-
 url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/640898234"
 
 [[tools."http:herdr-core"]]
-version = "0.1.18"
+version = "0.1.21"
 backend = "http:herdr-core"
 specifiers = ["latest"]
 
@@ -1335,40 +1335,40 @@ specifiers = ["latest"]
 rename_exe = "hc"
 
 [tools."http:herdr-core"."platforms.linux-arm64"]
-checksum = "sha256:cf33393cf950bb763734dc3e16610ab9daf8492391a4ef0de56026cd7f752853"
-url = "https://releases.herdr.dev/core/0.1.18/herdr-core-linux-aarch64.tar.gz"
+checksum = "sha256:e844a2bfab48a226097679d076bc83042fe57fccef5387ef802e5b24e78b529a"
+url = "https://releases.herdr.dev/core/0.1.21/herdr-core-linux-aarch64.tar.gz"
 
 [tools."http:herdr-core"."platforms.linux-arm64-musl"]
-checksum = "sha256:cf33393cf950bb763734dc3e16610ab9daf8492391a4ef0de56026cd7f752853"
-url = "https://releases.herdr.dev/core/0.1.18/herdr-core-linux-aarch64.tar.gz"
+checksum = "sha256:e844a2bfab48a226097679d076bc83042fe57fccef5387ef802e5b24e78b529a"
+url = "https://releases.herdr.dev/core/0.1.21/herdr-core-linux-aarch64.tar.gz"
 
 [tools."http:herdr-core"."platforms.linux-x64"]
-checksum = "sha256:5b2f97cb4b2a9d7a6b2cc5942628203ed9fbb7cc0c2b4b09ad8a6f5648e246b7"
-url = "https://releases.herdr.dev/core/0.1.18/herdr-core-linux-x86_64.tar.gz"
+checksum = "sha256:78424755c10a40dde38a0bdb55c20ac19706e9ae05ed68fc2acf1fcff0d941c1"
+url = "https://releases.herdr.dev/core/0.1.21/herdr-core-linux-x86_64.tar.gz"
 
 [tools."http:herdr-core"."platforms.linux-x64-baseline"]
-checksum = "sha256:5b2f97cb4b2a9d7a6b2cc5942628203ed9fbb7cc0c2b4b09ad8a6f5648e246b7"
-url = "https://releases.herdr.dev/core/0.1.18/herdr-core-linux-x86_64.tar.gz"
+checksum = "sha256:78424755c10a40dde38a0bdb55c20ac19706e9ae05ed68fc2acf1fcff0d941c1"
+url = "https://releases.herdr.dev/core/0.1.21/herdr-core-linux-x86_64.tar.gz"
 
 [tools."http:herdr-core"."platforms.linux-x64-musl"]
-checksum = "sha256:5b2f97cb4b2a9d7a6b2cc5942628203ed9fbb7cc0c2b4b09ad8a6f5648e246b7"
-url = "https://releases.herdr.dev/core/0.1.18/herdr-core-linux-x86_64.tar.gz"
+checksum = "sha256:78424755c10a40dde38a0bdb55c20ac19706e9ae05ed68fc2acf1fcff0d941c1"
+url = "https://releases.herdr.dev/core/0.1.21/herdr-core-linux-x86_64.tar.gz"
 
 [tools."http:herdr-core"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:5b2f97cb4b2a9d7a6b2cc5942628203ed9fbb7cc0c2b4b09ad8a6f5648e246b7"
-url = "https://releases.herdr.dev/core/0.1.18/herdr-core-linux-x86_64.tar.gz"
+checksum = "sha256:78424755c10a40dde38a0bdb55c20ac19706e9ae05ed68fc2acf1fcff0d941c1"
+url = "https://releases.herdr.dev/core/0.1.21/herdr-core-linux-x86_64.tar.gz"
 
 [tools."http:herdr-core"."platforms.macos-arm64"]
-checksum = "blake3:425bfa57a8e1294404a6470fa7d28617913718454c240ea30dcf8c494851899d"
-url = "https://releases.herdr.dev/core/0.1.18/herdr-core-macos-aarch64.tar.gz"
+checksum = "blake3:3da8c4d729f08b1a0302063c673e1afbac125239a5d59cb4dd0da8940062902e"
+url = "https://releases.herdr.dev/core/0.1.21/herdr-core-macos-aarch64.tar.gz"
 
 [tools."http:herdr-core"."platforms.macos-x64"]
-checksum = "sha256:15a12b80e93ec4e074dbdb82fa8a66e529857abfbdfb456f94d5116dc438fedc"
-url = "https://releases.herdr.dev/core/0.1.18/herdr-core-macos-x86_64.tar.gz"
+checksum = "sha256:e377e1d342cddce0346da5b2f3c281b9701e4731c00024c7c5028265e77a217f"
+url = "https://releases.herdr.dev/core/0.1.21/herdr-core-macos-x86_64.tar.gz"
 
 [tools."http:herdr-core"."platforms.macos-x64-baseline"]
-checksum = "sha256:15a12b80e93ec4e074dbdb82fa8a66e529857abfbdfb456f94d5116dc438fedc"
-url = "https://releases.herdr.dev/core/0.1.18/herdr-core-macos-x86_64.tar.gz"
+checksum = "sha256:e377e1d342cddce0346da5b2f3c281b9701e4731c00024c7c5028265e77a217f"
+url = "https://releases.herdr.dev/core/0.1.21/herdr-core-macos-x86_64.tar.gz"
 
 [[tools."http:oh-my-zsh"]]
 version = "0.0.1"

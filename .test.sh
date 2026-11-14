@@ -77,9 +77,22 @@ else
 fi
 
 echo "[1] skills..."
-for skill in avoid-ai-writing humanizer uv-package-manager video-to-recipe; do
+# Every skill the repo ships, read from the checkout instead of listed here (the
+# installer clones it to ~/.config/mise, see install.sh). The list used to be
+# hardcoded and named avoid-ai-writing and humanizer, which this repo has never
+# contained, so this block failed on every run.
+skills_dir="$HOME/.config/mise/conf.d/ai/dot-agents/skills"
+shipped=0
+while read -r dir; do
+    [ -n "$dir" ] || continue
+    skill=$(basename "$dir")
+    shipped=$((shipped + 1))
     if [ -f "$HOME/.agents/skills/$skill/SKILL.md" ]; then echo "  ✓ $skill"; else echo "  ✗ $skill MISSING"; fail=1; fi
-done
+done < <(find "$skills_dir" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort)
+if [ "$shipped" -eq 0 ]; then
+    echo "  ✗ no skills found under $skills_dir"
+    fail=1
+fi
 
 echo "[2] shell env (env.sh via zshenv)..."
 if [ "$MISE_AUTO_ENV" = "true" ]; then

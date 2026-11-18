@@ -17,6 +17,7 @@
 #   conf.d/herdr     herdr-app + herdr/hc (window, TUI and core)
 #   conf.d/macos     macOS .apps + macOS-only dotfiles (mise.macos.toml)
 #   conf.d/nvim      neovim
+#   conf.d/rex       rex (terminal workspace) + rex-agent-resume
 #   conf.d/termux    ~/.termux (mise.android.toml)
 #   conf.d/tmux      tmux
 #   conf.d/yazi      yazi

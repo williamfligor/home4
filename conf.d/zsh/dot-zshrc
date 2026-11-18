@@ -1,6 +1,6 @@
 # vi: ft=zsh
-# Interactive zsh startup. Order is the contract: nothing that can print or
-# prompt may run before the instant-prompt block, and the prompt theme loads last.
+# Interactive zsh startup. Order is the contract: the prompt initialises last, so
+# its hooks wrap every plugin and function sourced above it.
 
 # --- options and history ------------------------------------------------------
 setopt PROMPT_SUBST
@@ -14,14 +14,6 @@ SAVEHIST=1000000
 case $TERM in
   xterm-color | *-256color) color_prompt=yes ;;
 esac
-
-# --- powerlevel10k instant prompt --------------------------------------------
-# Keep this above anything that may need console input.
-_zsh_instant_prompt="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-if [[ -r $_zsh_instant_prompt ]]; then
-  source "$_zsh_instant_prompt"
-fi
-unset _zsh_instant_prompt
 
 # --- local fragments ---------------------------------------------------------
 # 10-mise-plugin.zsh defines mise-plugin(); 90-history-backup.zsh adds backups.
@@ -51,11 +43,6 @@ mise-plugin zsh-syntax-highlighting
 bindkey -M vicmd 'v' edit-command-line
 
 mise-plugin zsh-you-should-use
-mise-plugin powerlevel10k powerlevel10k.zsh-theme
-
-if [[ -f $HOME/.p10k.zsh ]]; then
-  source "$HOME/.p10k.zsh"
-fi
 
 # oh-my-zsh turns correction prompts on; this shell does not want them.
 unsetopt correct_all
@@ -74,4 +61,12 @@ bindkey -M vicmd '^[' undefined-key
 
 if (( $+commands[fzf] )); then
   source <(fzf --zsh)
+fi
+
+# --- starship prompt ---------------------------------------------------------
+# Last, so its precmd/preexec hooks wrap everything above. mise installs the
+# binary (conf.d/zsh/mise.toml) and env.sh has already put its shim on PATH.
+# Styling lives in ~/.config/starship.toml, not here.
+if (( $+commands[starship] )); then
+  eval "$(starship init zsh)"
 fi

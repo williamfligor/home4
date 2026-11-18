@@ -1,8 +1,12 @@
-# What zsh needs from mise: the prompt, three plugins, and the dotfile links.
-# One section per entry; upstream tarballs all wrap their contents in a directory,
-# hence strip_components.
+# What zsh needs from mise: the prompt binary, three plugins, and the dotfile
+# links. One section per entry; upstream tarballs all wrap their contents in a
+# directory, hence strip_components.
 
 [tools]
+
+# The prompt. The registry entry resolves to aqua:starship/starship, so there is
+# no release URL to track here. ~/.config/starship.toml carries the styling.
+starship = "latest"
 
 # Pinned by commit: oh-my-zsh publishes no usable release tags.
 [tools."http:oh-my-zsh"]
@@ -20,15 +24,6 @@ version = "1.11.1"
 url = "https://github.com/MichaelAquilina/zsh-you-should-use/archive/refs/tags/{{ version }}.tar.gz"
 strip_components = 1
 
-# The only floating version here: p10k publishes releases, so `latest` resolves
-# through the GitHub API instead of a tag convention.
-[tools."http:powerlevel10k"]
-version = "latest"
-url = "https://github.com/romkatv/powerlevel10k/archive/v{{ version }}.tar.gz"
-strip_components = 1
-version_list_url = "https://api.github.com/repos/romkatv/powerlevel10k/releases/latest"
-version_json_path = ".tag_name"
-
 [dotfiles]
 
 # Symlinks for the files this repo owns; copies for the two entry points the user
@@ -37,8 +32,8 @@ version_json_path = ".tag_name"
 source = "dot-config/zsh"
 mode = "symlink"
 
-[dotfiles."~/.p10k.zsh"]
-source = "dot-p10k.zsh"
+[dotfiles."~/.config/starship.toml"]
+source = "dot-config/starship.toml"
 mode = "symlink"
 
 [dotfiles."~/.zshenv"]

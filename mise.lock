@@ -1418,7 +1418,7 @@ checksum = "sha256:78424755c10a40dde38a0bdb55c20ac19706e9ae05ed68fc2acf1fcff0d94
 url = "https://releases.herdr.dev/core/0.1.21/herdr-core-linux-x86_64.tar.gz"
 
 [tools."http:herdr-core"."platforms.macos-arm64"]
-checksum = "blake3:3da8c4d729f08b1a0302063c673e1afbac125239a5d59cb4dd0da8940062902e"
+checksum = "sha256:1ab38dd9270f63a8f794d6d60e8702eb0d1c85a72bda85d735e5eea43f05ffed"
 url = "https://releases.herdr.dev/core/0.1.21/herdr-core-macos-aarch64.tar.gz"
 
 [tools."http:herdr-core"."platforms.macos-x64"]
@@ -1469,47 +1469,6 @@ url = "https://github.com/ohmyzsh/ohmyzsh/archive/62afbdebb96bf91c044a92b75d86f8
 
 [tools."http:oh-my-zsh"."platforms.windows-x64-baseline"]
 url = "https://github.com/ohmyzsh/ohmyzsh/archive/62afbdebb96bf91c044a92b75d86f85a67da67a7.zip"
-
-[[tools."http:powerlevel10k"]]
-version = "1.20.0"
-backend = "http:powerlevel10k"
-specifiers = ["latest"]
-
-[tools."http:powerlevel10k".options]
-strip_components = "1"
-
-[tools."http:powerlevel10k"."platforms.linux-arm64"]
-url = "https://github.com/romkatv/powerlevel10k/archive/v1.20.0.tar.gz"
-
-[tools."http:powerlevel10k"."platforms.linux-arm64-musl"]
-url = "https://github.com/romkatv/powerlevel10k/archive/v1.20.0.tar.gz"
-
-[tools."http:powerlevel10k"."platforms.linux-x64"]
-url = "https://github.com/romkatv/powerlevel10k/archive/v1.20.0.tar.gz"
-
-[tools."http:powerlevel10k"."platforms.linux-x64-baseline"]
-url = "https://github.com/romkatv/powerlevel10k/archive/v1.20.0.tar.gz"
-
-[tools."http:powerlevel10k"."platforms.linux-x64-musl"]
-url = "https://github.com/romkatv/powerlevel10k/archive/v1.20.0.tar.gz"
-
-[tools."http:powerlevel10k"."platforms.linux-x64-musl-baseline"]
-url = "https://github.com/romkatv/powerlevel10k/archive/v1.20.0.tar.gz"
-
-[tools."http:powerlevel10k"."platforms.macos-arm64"]
-url = "https://github.com/romkatv/powerlevel10k/archive/v1.20.0.tar.gz"
-
-[tools."http:powerlevel10k"."platforms.macos-x64"]
-url = "https://github.com/romkatv/powerlevel10k/archive/v1.20.0.tar.gz"
-
-[tools."http:powerlevel10k"."platforms.macos-x64-baseline"]
-url = "https://github.com/romkatv/powerlevel10k/archive/v1.20.0.tar.gz"
-
-[tools."http:powerlevel10k"."platforms.windows-x64"]
-url = "https://github.com/romkatv/powerlevel10k/archive/v1.20.0.tar.gz"
-
-[tools."http:powerlevel10k"."platforms.windows-x64-baseline"]
-url = "https://github.com/romkatv/powerlevel10k/archive/v1.20.0.tar.gz"
 
 [[tools."http:zsh-syntax-highlighting"]]
 version = "0.8.0"
@@ -2024,6 +1983,66 @@ url_api = "https://api.github.com/repos/BurntSushi/ripgrep/releases/assets/47811
 version = "1.98.1"
 backend = "core:rust"
 specifiers = ["latest"]
+
+[[tools.starship]]
+version = "1.27.0"
+backend = "aqua:starship/starship"
+specifiers = ["latest"]
+
+[tools.starship."platforms.linux-arm64"]
+checksum = "sha256:341f5cbf24699fa0b27ec88965ad25f862ea09e15d35a543fd6ffdff1d2aa00d"
+url = "https://github.com/starship/starship/releases/download/v1.27.0/starship-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/starship/starship/releases/assets/650074383"
+
+[tools.starship."platforms.linux-arm64-musl"]
+checksum = "sha256:341f5cbf24699fa0b27ec88965ad25f862ea09e15d35a543fd6ffdff1d2aa00d"
+url = "https://github.com/starship/starship/releases/download/v1.27.0/starship-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/starship/starship/releases/assets/650074383"
+
+[tools.starship."platforms.linux-x64"]
+checksum = "sha256:3b94758850901717eb36aa1b53f8492c1322506ec6d41273bc6151e79ed8e4a1"
+url = "https://github.com/starship/starship/releases/download/v1.27.0/starship-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/starship/starship/releases/assets/650074501"
+
+[tools.starship."platforms.linux-x64-baseline"]
+checksum = "sha256:3b94758850901717eb36aa1b53f8492c1322506ec6d41273bc6151e79ed8e4a1"
+url = "https://github.com/starship/starship/releases/download/v1.27.0/starship-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/starship/starship/releases/assets/650074501"
+
+[tools.starship."platforms.linux-x64-musl"]
+checksum = "sha256:10c8eb4cb3b761d9bf59ea828444c2dab36c900b7d69a69e08814b286969df89"
+url = "https://github.com/starship/starship/releases/download/v1.27.0/starship-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/starship/starship/releases/assets/650074510"
+
+[tools.starship."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:10c8eb4cb3b761d9bf59ea828444c2dab36c900b7d69a69e08814b286969df89"
+url = "https://github.com/starship/starship/releases/download/v1.27.0/starship-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/starship/starship/releases/assets/650074510"
+
+[tools.starship."platforms.macos-arm64"]
+checksum = "sha256:5362da8cb2928f98f3ce0ffda697cf0f8de70081db000dae316d6d3a404f6cf0"
+url = "https://github.com/starship/starship/releases/download/v1.27.0/starship-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/starship/starship/releases/assets/650074353"
+
+[tools.starship."platforms.macos-x64"]
+checksum = "sha256:344e4d38787e0aa86dd522ae5462e6fb6da1227691f81a79ffed480a4563ccb3"
+url = "https://github.com/starship/starship/releases/download/v1.27.0/starship-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/starship/starship/releases/assets/650074453"
+
+[tools.starship."platforms.macos-x64-baseline"]
+checksum = "sha256:344e4d38787e0aa86dd522ae5462e6fb6da1227691f81a79ffed480a4563ccb3"
+url = "https://github.com/starship/starship/releases/download/v1.27.0/starship-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/starship/starship/releases/assets/650074453"
+
+[tools.starship."platforms.windows-x64"]
+checksum = "sha256:7764f861805376af2812dd78c84fadc16b714cf3f346baed9b597bfda8484403"
+url = "https://github.com/starship/starship/releases/download/v1.27.0/starship-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/starship/starship/releases/assets/650074470"
+
+[tools.starship."platforms.windows-x64-baseline"]
+checksum = "sha256:7764f861805376af2812dd78c84fadc16b714cf3f346baed9b597bfda8484403"
+url = "https://github.com/starship/starship/releases/download/v1.27.0/starship-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/starship/starship/releases/assets/650074470"
 
 [[tools.tmux]]
 version = "3.7c"

@@ -31,6 +31,12 @@ herdr = { version = "latest", minimum_release_age = "0h" }
   version_list_url = "https://releases.herdr.dev/core/latest.json",
   version_json_path = ".version",
   rename_exe = "hc",
+  # herdr-core re-execs its own path for the holders and the boot service, so
+  # that path must outlive `mise upgrade`, which deletes the version folder.
+  # Copy rather than symlink, and rename into place so a core starting at that
+  # moment never sees a half-written binary. `hc` beside it is a link for
+  # scripts that call the path directly; on PATH, mise's own `hc` still wins.
+  postinstall = 'install -m 0755 "$MISE_TOOL_INSTALL_PATH/hc" ~/.local/bin/.herdr-core.tmp && mv -f ~/.local/bin/.herdr-core.tmp ~/.local/bin/herdr-core && ln -sfn herdr-core ~/.local/bin/hc',
   checksum_url = "https://releases.herdr.dev/core/{{ version }}/manifest.json",
   checksum_expr = '"sha256:" + fromJSON(body).targets[os + "-" + (arch == "x64" ? "x86_64" : "aarch64")].sha256',
   platforms = {

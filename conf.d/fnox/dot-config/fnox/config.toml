@@ -1,0 +1,30 @@
+# Global fnox config. Contract: conf.d/fnox/README.md.
+# References only; no plaintext credentials. Values live in 1Password.
+
+env = "exec"
+redact_exec = true
+if_missing = "error"
+
+[daemon]
+enabled = true
+idle_timeout = "8h"
+cache_ttl = "30m"
+
+# Bootstrap store for the 1Password service-account token.
+[providers.keychain]
+type = "keychain"
+service = "fnox"
+
+[providers.op]
+type = "1password"
+vault = "Terminal"
+token = { secret = "OP_SERVICE_ACCOUNT_TOKEN" }
+
+[secrets]
+# Bootstrap credential for [providers.op]; read on demand, never exported.
+OP_SERVICE_ACCOUNT_TOKEN = { provider = "keychain", value = "op-service-account", env = false }
+
+# 1Password
+GITHUB_TOKEN          = { provider = "op", value = "GitHub API Key/credential", env = true }
+OPENAI_API_KEY        = { provider = "op", value = "OpenAI API Key/credential", env = true }
+OPENCODE_API_KEY      = { provider = "op", value = "OpenCode Go API Key/credential", env = true }

@@ -41,6 +41,7 @@ tasks/               mise file-tasks (pi update; mac helpers ship in their bundl
 conf.d/ai/           pi + agent skills + herdr configs (+ [bootstrap.repos])
 conf.d/bat/          bat
 conf.d/dotfiles/     ~/.dircolors, ~/.ssh/config, ~/.local/bin
+conf.d/fnox/         fnox + 1Password-backed secret references
 conf.d/git/          delta + difftastic + ~/.gitconfig, ~/.config/git
 conf.d/macos/        macOS .apps + .app install task + macOS-only dotfiles (mise.macos.toml)
 conf.d/nvim/         neovim
@@ -69,6 +70,52 @@ mise skills sync      # when tool-attached skills land (packslip)
 ```
 
 Shell activates mise via `~/.zshenv` → `~/.config/zsh/env.sh` (`mise activate zsh --shims`, `MISE_AUTO_ENV=true`).
+
+## Secrets (fnox + 1Password)
+
+Contract and rationale: `conf.d/fnox/README.md`.
+
+`conf.d/fnox` installs `fnox` and links `~/.config/fnox/config.toml`. Secret
+values live in the 1Password `Terminal` vault; the config contains references
+only. The bootstrap credential is the service-account token, stored in the OS
+keychain.
+
+### New machine
+
+1. Run `mise bootstrap`. It installs `fnox` and `op`, and links the config.
+2. Unlock the OS keychain:
+    - macOS: the login Keychain.
+    - Linux: GNOME Keyring or KWallet. If `~/.local/share/keyrings` is empty:
+        ```sh
+        read -rsp 'Keyring password: ' pw; echo
+        printf '%s' "$pw" | gnome-keyring-daemon --unlock --components=secrets
+        unset pw
+        ```
+3. Create a read-only service account for `Terminal` in 1Password, then store
+   its token:
+    ```sh
+    fnox set OP_SERVICE_ACCOUNT_TOKEN --provider keychain --key-name op-service-account --global
+    ```
+4. Verify:
+    ```sh
+    fnox provider test keychain
+    fnox provider test op
+    fnox check --all
+    ```
+5. Open a new zsh. The three `env = true` secrets load via `fnox activate`.
+
+### Daily use
+
+```sh
+fnox exec -- <command>
+fnox exec --only OPENAI_API_KEY -- <command>
+fnox list
+fnox check --all
+```
+
+Non-interactive scripts must use `fnox exec`. `fnox export` prints plaintext.
+After rotation, run `fnox daemon clear` and open a new shell. Do not put secrets
+in `~/.local.sh` or tracked files.
 
 ## Notes / caveats
 

@@ -1,0 +1,9 @@
+# fnox + 1Password. Contract: conf.d/fnox/README.md.
+# Secret references only; non-secret endpoints belong to their consumers.
+
+[tools]
+1password-cli = "latest"
+fnox = "latest"
+
+[dotfiles]
+"~/.config/fnox/config.toml" = { source = "dot-config/fnox/config.toml", mode = "symlink" }

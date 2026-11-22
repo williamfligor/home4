@@ -13,6 +13,7 @@
   "lastChangelogVersion": "2.0.0",
   "packages": [
     "npm:@ff-labs/pi-fff",
+    "npm:@spences10/pi-redact@0.1.0",
     "npm:donsetch",
     "npm:pi-blackhole",
     "npm:pi-goal-x",

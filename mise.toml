@@ -13,6 +13,7 @@
 #   conf.d/ai        pi + agent skills (+ [bootstrap.repos])
 #   conf.d/bat       bat
 #   conf.d/dotfiles  ~/.dircolors, ~/.ssh/config, ~/.local/bin
+#   conf.d/fnox      fnox + 1Password-backed secret references
 #   conf.d/git       delta + difftastic + git config
 #   conf.d/herdr     herdr-app + herdr/hc (window, TUI and core)
 #   conf.d/macos     macOS .apps + macOS-only dotfiles (mise.macos.toml)

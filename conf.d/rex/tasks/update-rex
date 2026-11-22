@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+#MISE description="Upgrade rex from the snapshot channel, with an optional server restart"
+# The installer is the updater: re-running it installs the newest build on the
+# channel. Snapshot is the only channel with releases today; pin it so a later
+# stable release does not move this machine off snapshot by accident.
+set -euo pipefail
+
+CHANNEL="${REX_CHANNEL:-snapshot}"
+BIN="$HOME/.local/bin/rex"
+ROLLBACK="$HOME/.local/share/rex/rollback"
+
+restart=0
+dry_run=0
+for arg in "$@"; do
+    case "$arg" in
+        --restart) restart=1 ;;
+        --dry-run) dry_run=1 ;;
+        -h | --help)
+            cat <<'EOF'
+Upgrade rex from the snapshot channel.
+
+  --dry-run   show what the installer would do, change nothing
+  --restart   restart the server onto the new binary (ends live sessions;
+              rex-agent-resume restores the panes and agent conversations)
+EOF
+            exit 0
+            ;;
+        *)
+            echo "update-rex: unknown argument: $arg" >&2
+            exit 2
+            ;;
+    esac
+done
+
+if [[ ! -x $BIN ]]; then
+    echo "update-rex: $BIN is not installed; use the installer instead" >&2
+    exit 1
+fi
+
+tmp="$(mktemp)"
+trap 'rm -f "$tmp"' EXIT
+curl -fsSL https://pkgs.superlogical.com/rex/install.sh -o "$tmp"
+
+echo "== installed =="
+"$BIN" version | head -1 || true
+
+# A snapshot build can be broken, and old builds are not fetchable again (the
+# release download URLs are signed and expire), so keep one rolling copy of the
+# binary about to be replaced. The backup must exist before the remote installer
+# runs, but a dry run must not create or overwrite it. rex-agent-resume restores
+# sessions and conversations after a restart; it cannot put an older rex binary
+# back.
+if (( ! dry_run )); then
+    version="$("$BIN" version | awk 'NR == 1 { print $2 }')"
+    mkdir -p "$ROLLBACK"
+    cp -p "$BIN" "$ROLLBACK/rex"
+fi
+
+echo "== installer dry run =="
+sh "$tmp" --user --channel "$CHANNEL" --dry-run
+if (( dry_run )); then
+    exit 0
+fi
+
+echo "== installing =="
+sh "$tmp" --user --channel "$CHANNEL"
+
+echo "== installed now =="
+if ! installed_version="$("$BIN" version 2>&1 | head -1)"; then
+    echo "update-rex: the new binary is not runnable" >&2
+    echo "restore: cp -p $ROLLBACK/rex $BIN" >&2
+    exit 1
+fi
+printf '%s\n' "$installed_version"
+
+if (( restart )); then
+    # The running server starts every live block, this one included, so the
+    # restart ends the shell that ran this task. Queue it and let systemd finish.
+    systemctl --user daemon-reload
+    echo "Restarting rex.service; this block ends with the old server."
+    systemctl --user restart --no-block rex.service
+else
+    cat <<EOF
+Binary updated; the running server still uses the old build. When it suits you:
+  systemctl --user daemon-reload && systemctl --user restart rex.service
+(ends live sessions; rex-agent-resume restores them)
+Rollback to $version: cp -p $ROLLBACK/rex $BIN
+EOF
+fi

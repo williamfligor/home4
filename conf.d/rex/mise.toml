@@ -19,3 +19,8 @@
 [tasks."setup:rex-agent-resume"]
 description = "Install or update rex-agent-resume and wire it into your agents"
 run = "curl -fsSL https://raw.githubusercontent.com/YangJonghun/rex-agent-resume/main/install.sh | sh"
+
+[task_config]
+# A conf.d folder is its own task root: includes resolve inside the folder and
+# replace its default task dirs.
+includes = ["tasks"]

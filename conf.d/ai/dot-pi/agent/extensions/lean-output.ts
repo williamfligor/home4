@@ -43,10 +43,9 @@
  * PI_LEAN_KEEP is the escape hatch for a tool that must keep its own renderer.
  *
  * Sole owner: this is the only extension that patches tool-row rendering
- * (`Container.render`, `ToolExecutionComponent.render`). A second extension
- * patching the same stack is how the blank-line reservation around inline
- * images got eaten once already — use `PI_LEAN_KEEP` plus your own
- * `registerToolRenderer` instead of re-patching.
+ * (`Container.render`, `ToolExecutionComponent.render`). Do not patch the same
+ * stack in another extension; use `PI_LEAN_KEEP` plus your own
+ * `registerToolRenderer` instead.
  *
  * Toggling: `/lean [on|off|rows|thinking|status]` flips the running session with
  * no reload. A row bakes its renderer definition in at construction

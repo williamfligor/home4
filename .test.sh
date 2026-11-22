@@ -51,11 +51,8 @@ $RUNNER buildx build \
     --secret "id=github_token,env=GITHUB_TOKEN" \
     -t home4-test -f .Dockerfile .
 
-# The three blocks run inside the image as an interactive zsh session. Each is a
-# quoted heredoc so the shell does not expand it here: $HOME, $() and friends are
-# evaluated in the container. (The baseline embedded them as single-quoted
-# arguments next to a grep -oP pattern that itself contained single quotes;
-# heredocs remove that hazard.)
+# The blocks run inside the image as interactive zsh sessions. Quoted heredocs
+# leave $HOME, $(), and similar expansions for the container's shell.
 BOOTSTRAP_SCRIPT=$(
     cat <<'ZSH'
 fail=0
@@ -77,10 +74,8 @@ else
 fi
 
 echo "[1] skills..."
-# Every skill the repo ships, read from the checkout instead of listed here (the
-# installer clones it to ~/.config/mise, see install.sh). The list used to be
-# hardcoded and named avoid-ai-writing and humanizer, which this repo has never
-# contained, so this block failed on every run.
+# Discover shipped skills from the checkout so assertions track the bundle's
+# actual contents.
 skills_dir="$HOME/.config/mise/conf.d/ai/dot-agents/skills"
 shipped=0
 while read -r dir; do

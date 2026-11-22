@@ -19,8 +19,7 @@ export PATH="$HOME/.local/bin:$PATH"
 # mise owns the rest of PATH; --shims keeps activation to a single eval line.
 eval "$(mise activate zsh --shims)"
 
-# mise 2026.9.1 does not read .miserc.toml, so the per-OS env files are switched
-# on here instead (install.sh sets the same variable).
+# Enable the platform-specific mise config fragments.
 export MISE_AUTO_ENV=true
 
 # Prefer neovim when it is installed; the two variables always agree.

@@ -1,26 +1,13 @@
-# Rex: the terminal workspace, and rex-agent-resume, which puts the agent
-# conversations back in the panes Rex restores after its server restarts.
-#
-# rex-agent-resume itself installs into ~/.local/share/rex-agent-resume and
-# edits other applications' configs (Claude Code, Codex, pi, …), so wiring it
-# in stays explicit, like herdr-wake in conf.d/herdr.
-#
-# init.lua stays a copy, not a symlink: rex-agent-resume rewrites it whole (a
-# temp file, then rename) on every install and on its palette toggle, which
-# would replace a symlink with a regular file. `mise dotfiles add --changed`
-# picks up its edits, the same as ~/.config/herdr/config.toml.
+# Bundle contract and setup requirements: README.md.
 
 [dotfiles]
+# The installer replaces init.lua atomically; see README.md for why this is a copy.
 "~/.config/rex/init.lua" = { source = "dot-config/rex/init.lua", mode = "copy" }
 
-# Upstream's documented update path; it re-reads each agent and says
-# "unchanged" for the ones already wired. Needs `rex` (conf.d/rex is not a tool
-# bundle) and `jq`.
+# Requires Rex and jq; installer edits agent configs in other applications.
 [tasks."setup:rex-agent-resume"]
 description = "Install or update rex-agent-resume and wire it into your agents"
 run = "curl -fsSL https://raw.githubusercontent.com/YangJonghun/rex-agent-resume/main/install.sh | sh"
 
 [task_config]
-# A conf.d folder is its own task root: includes resolve inside the folder and
-# replace its default task dirs.
 includes = ["tasks"]

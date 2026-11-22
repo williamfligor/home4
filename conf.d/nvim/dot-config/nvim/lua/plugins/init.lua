@@ -76,9 +76,8 @@ local function gitsigns_on_attach(bufnr)
   end
 end
 
--- Language servers: enable when the binary exists; the two custom entries also
--- register their command and filetypes. The Python server went away with its
--- wrapper, so no branch guards it any more.
+-- Enable servers only when their executable exists; custom entries also provide
+-- their command and filetypes.
 local lsp_servers = {
   { name = "clangd", binary = "clangd" },
   {

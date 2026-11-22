@@ -38,13 +38,15 @@ mise.linux.toml      Linux placeholder (empty on purpose — Termux may report o
 .miserc.toml         early-init auto_env (forward-compat)
 tasks/               mise file-tasks (pi update; mac helpers ship in their bundle)
 
-conf.d/ai/           pi + agent skills + herdr configs (+ [bootstrap.repos])
+conf.d/ai/           pi + agent skills
 conf.d/bat/          bat
 conf.d/dotfiles/     ~/.dircolors, ~/.ssh/config, ~/.local/bin
 conf.d/fnox/         fnox + 1Password-backed secret references
 conf.d/git/          delta + difftastic + ~/.gitconfig, ~/.config/git
+conf.d/herdr/        Herdr TUI/core, wake integration, and config files
 conf.d/macos/        macOS .apps + .app install task + macOS-only dotfiles (mise.macos.toml)
 conf.d/nvim/         neovim
+conf.d/rex/          rex-agent-resume integration (requires Rex)
 conf.d/termux/       ~/.termux (mise.android.toml)
 conf.d/tmux/         tmux
 conf.d/yazi/         yazi

@@ -16,6 +16,10 @@ fnox is the secret bus. This bundle installs `fnox` and links the global config.
 - `conf.d/ai/dot-pi/agent/extensions/fnox-redact-bridge.ts` registers the exact
   global values with `@spences10/pi-redact`; required keys live in
   `redact-secrets.json`.
+- `conf.d/ai/dot-pi/agent/auth.json` resolves Pi's model key with
+  `!fnox -c $HOME/.config/fnox/config.toml get OPENCODE_API_KEY`. The config path
+  is pinned so a project `fnox.toml` cannot override it, and Pi caches the result
+  for the process lifetime, so a rotation needs a Pi restart.
 
 Do not add non-secret endpoints here: they would enter the redaction list and
 would disappear whenever the keychain is unavailable.

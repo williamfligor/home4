@@ -2,7 +2,7 @@
   "compaction": "auto",
   "compactionEngine": "blackhole",
   "tailBehavior": "pi-default",
-  "showPreCompactionMessage": true,
+  "showPreCompactionMessage": false,
 
   "observerModel": { "provider": "opencode-go", "id": "mimo-v2.6-flash", "cooldownHours": 2 },
   "reflectorModel": { "provider": "opencode-go", "id": "mimo-v2.6-flash", "cooldownHours": 2 },

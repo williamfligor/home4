@@ -11,9 +11,9 @@ idle_timeout = "8h"
 cache_ttl = "30m"
 
 # Bootstrap store for the 1Password service-account token.
-[providers.keychain]
-type = "keychain"
-service = "fnox"
+[providers.age]
+type = "age"
+recipients = ["age1wutmdycukhhmnmdxr37dg5knd0ejqxyv2uqvw2fysc4h6yl3tfrqq6edey"]
 
 [providers.op]
 type = "1password"
@@ -22,7 +22,7 @@ token = { secret = "OP_SERVICE_ACCOUNT_TOKEN" }
 
 [secrets]
 # Bootstrap credential for [providers.op]; read on demand, never exported.
-OP_SERVICE_ACCOUNT_TOKEN = { provider = "keychain", value = "op-service-account", env = false }
+OP_SERVICE_ACCOUNT_TOKEN= { provider = "age", value = "YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBxRnNEWlFvakVxelYxaDJEOVV4ekgvNWVYbE5Fd0hFRDViQ3EvR3YxV1g4CjFiWkQyRE5DU3BTR25sd0tGMEU1Smk0cmh4dGF5N0NWVHhzdUdmdWN0ZG8KLT4gUGFEPSlocDctZ3JlYXNlIExbZig/XSA0PVMyNk1qCjhvU3hTTHUydkEKLS0tIEtXU0tmSmZnY3hmc25HMFhjSlBvZXZVVzR2OFpJeXJGTlQ0MEVIdFVEWG8KOpoYlr2YSMOskACMVTxyqH49Qxe9UiH+gAOl0JTP/2Azda7o+3FHiRyddW0p0A1ghGM21fczNkesdUqRPWNOi9tWXdc+uG40IZvomK3Imq3oQBP8YsPeSnddR2LUEBNkR5/GQFA7ndnWesbMmG8UJIIcwwWQ76OGsBPB0RPRz9ZDEawhBtVy/7DWQd/3h465sNCLOtUHkos20o0HqNndDLAJV/5SqW2o2gnyf5+XLxTjosmiXeuphi+Q7c9+IiznfmJCLhPUTZ1D4I7oO5+B+ekbXv74lvxw+w5KB5mqGENb7T5IEpfejs2paN+GJu+yqCk4V+Y3fUYwqt83+CyTyLRE2dW+ivNVx6/cCdAuOrWLOMKRkS+noUBNCI5Am50OHN0SBX2HBaY173R34p2Kc3TlctiS650Kji2d71aKFxsrbmO+3PypImVVDSKV/lreQHLyf2M2b6QxS6FUuFNtz1oV2CkA/o0++aQYokUH58mvvU6VLWReH0Wx/0rr3oCFBn43mBQR67RoJxoRNHVKXNC/l5rUi8syPLvq+Y7j37vVLEQLzdVtjxwvMuTdxhdAYoo5QnWsY+DrrTUQBLzva2HUrJf/oqykDq4JnwFzlHRkopwepPAYapVP2KzFtZ0qUEPI/ShTYJLNkcGm+aRcxHlsNjUtv63T1mCr55ZDIFn+qt1SBrk2NWTh045YdKh0vbBdT/7T3AxUIyJGkQ9cefWwlnEe2eOf0If1n0N8/xeGW4G903lpDKVT6gxsJbj4zQo3/ms1vBT1LlZh4BMKC4Rv2Y4zdSbzZ9JmQy5HjWf27I1CHJqIEnP1lILmsZys2a3hH5uewmgpaVdN3fe/H7ZeMgYaWIFU9sm7Kw3RNO+mWKe0NJZhlGKWrz092AC8JP4btYGdUqwhK/8hQxjf8NVJcAY+xbdOTrIYUjnFfDQRcbRKhfbCAs6YtPKayx9YqqrzTJD2royR4tTlAVpCDk9RzLkUQBkCjYUqakPvyr7hert0FyGhGj2ZDyfFW1E9ob58jGRPIcHd67WAHRV18Sl5PLo/sdTU0C1U6aLgRvLhR1i7uJ12loCox/XP6v14ICBwX0Gm1npBGSdj0oODxrXy6oHT84zy6r5dgTXdPlM3p7qdHQPx", env = false }
 
 # 1Password
 GITHUB_TOKEN          = { provider = "op", value = "GitHub API Key/credential", env = true }

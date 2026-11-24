@@ -11,6 +11,7 @@ dotfiles.default_mode = "symlink"
 self_update.minimum_release_age = "0s"
 
 [tools]
+age = "1.3.2"
 "antigravity-cli" = { version = "latest", lazy = true }
 "aqua:astral-sh/ruff" = { version = "latest", lazy = true, lazy_bins = ["ruff"] }
 "aqua:koalaman/shellcheck" = { version = "latest", lazy = true, lazy_bins = ["shellcheck"] }

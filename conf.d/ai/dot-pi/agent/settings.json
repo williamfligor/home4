@@ -34,5 +34,10 @@
   "tuiMode": "regular",
   "showCacheMissNotices": true,
   "fullscreenExitOutput": "transcript",
-  "outputPad": 0
+  "outputPad": 0,
+  "extensionChangelogVersions": {
+    "{\"source\":\"npm:@spences10/pi-redact@0.1.0\",\"scope\":\"user\"}": "0.1.0",
+    "{\"source\":\"npm:pi-blackhole\",\"scope\":\"user\"}": "0.5.19",
+    "{\"source\":\"npm:pi-subagents\",\"scope\":\"user\"}": "0.90.0"
+  }
 }

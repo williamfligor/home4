@@ -4,10 +4,5 @@
 # The installer replaces init.lua atomically; see README.md for why this is a copy.
 "~/.config/rex/init.lua" = { source = "dot-config/rex/init.lua", mode = "copy" }
 
-# Requires Rex and jq; installer edits agent configs in other applications.
-[tasks."setup:rex-agent-resume"]
-description = "Install or update rex-agent-resume and wire it into your agents"
-run = "curl -fsSL https://raw.githubusercontent.com/YangJonghun/rex-agent-resume/main/install.sh | sh"
-
 [task_config]
 includes = ["tasks"]

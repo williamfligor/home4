@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+#MISE description="Install or update rex-agent-resume and wire it into your agents"
+# The installer is upstream's; the repair below is ours.
+#
+# rex-agent-resume's hook still requires REX_SESSION. Rex stopped exporting it to
+# terminal programs: a pane now carries REX_BLOCK, and a block ID stands for the
+# session that holds it, which is why the integrations themselves already gate on
+# REX_BLOCK alone. The hook cannot use a block ID where the terminal API wants a
+# session, so until the installer adapts, run it and then teach the hook to find
+# the pane through REX_BLOCK. Repairing here, after every install, keeps the fix
+# next to the step that overwrites it; if either upstream file changes shape, the
+# repair fails loudly instead of quietly reverting to a hook that records nothing.
+set -euo pipefail
+
+root="$HOME/.local/share/rex-agent-resume"
+shim="$root/bin/rex-agent-resume-hook"
+hook="$root/lua/rex-agent-resume/hook.lua"
+
+curl -fsSL https://raw.githubusercontent.com/YangJonghun/rex-agent-resume/main/install.sh | sh
+
+python3 - "$shim" "$hook" <<'PY'
+import sys
+from pathlib import Path
+
+shim = Path(sys.argv[1])
+hook = Path(sys.argv[2])
+
+shim_old = 'if [ -n "$REX_BLOCK" ] && [ -n "$REX_SESSION" ] && [ -x "$rex" ]; then'
+shim_new = 'if [ -n "$REX_BLOCK" ] && [ -x "$rex" ]; then'
+
+hook_old = '''function M.run(agent, ppid)
+  local spec = agents.specs[agent]
+  if not spec then return util.log("hook: unknown agent " .. tostring(agent)) end
+  local pane = { block_id = os.getenv("REX_BLOCK"), session_id = os.getenv("REX_SESSION") }
+  if not pane.block_id or not pane.session_id then return end
+'''
+
+hook_new = '''-- Rex sets REX_BLOCK in every terminal and no longer sets REX_SESSION: a block ID
+-- names the session that holds it. The terminal API wants the session ID, so find
+-- the pane that holds this block when REX_SESSION is absent.
+local function pane_of_block(block_id, session_id)
+  if not block_id or block_id == "" then return nil end
+  if session_id and session_id ~= "" then return { block_id = block_id, session_id = session_id } end
+  for _, pane in ipairs(util.terminal_panes()) do
+    if pane.block_id == block_id then return pane end
+  end
+end
+
+function M.run(agent, ppid)
+  local spec = agents.specs[agent]
+  if not spec then return util.log("hook: unknown agent " .. tostring(agent)) end
+  local pane = pane_of_block(os.getenv("REX_BLOCK"), os.getenv("REX_SESSION"))
+  if not pane then return util.log("hook: " .. agent .. ": no pane for " .. tostring(os.getenv("REX_BLOCK"))) end
+'''
+
+
+def patch(path, old, new, marker, label):
+    text = path.read_text()
+    if marker in text:
+        print(f"rex-agent-resume: {label} already repaired")
+        return
+    if text.count(old) != 1:
+        raise SystemExit(f"rex-agent-resume: {path} no longer matches; update the repair in this task")
+    path.write_text(text.replace(old, new))
+    print(f"rex-agent-resume: repaired {label}")
+
+
+patch(shim, shim_old, shim_new, shim_new, "hook shim")
+patch(hook, hook_old, hook_new, "local function pane_of_block", "hook")
+PY
+
+# The shim must not gate on the variable Rex no longer sets.
+if grep -q 'REX_SESSION' "$shim"; then
+    echo "setup:rex-agent-resume: $shim still mentions REX_SESSION" >&2
+    exit 1
+fi

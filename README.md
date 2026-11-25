@@ -48,9 +48,7 @@ conf.d/macos/        macOS .apps + .app install task + macOS-only dotfiles (mise
 conf.d/nvim/         neovim
 conf.d/rex/          rex-agent-resume integration (requires Rex)
 conf.d/termux/       ~/.termux (mise.android.toml)
-conf.d/tmux/         tmux
 conf.d/yazi/         yazi
-conf.d/zellij/       zellij
 conf.d/zsh/          zsh + prompt + plugins
 ```
 

@@ -1,5 +1,0 @@
-[tools]
-zellij = "latest"
-
-[dotfiles]
-"~/.config/zellij" = { source = "dot-config/zellij", mode = "symlink" }

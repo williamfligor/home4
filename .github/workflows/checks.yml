@@ -18,7 +18,7 @@ jobs:
       MISE_TRUSTED_CONFIG_PATHS: ${{ github.workspace }}
       # `mise run` / `mise exec` install every configured tool they can see, so
       # without these the "hook tooling only" steps below would still pull the
-      # whole non-lazy set (neovim, bun, herdr, zellij, yazi, …) to run four
+      # whole non-lazy set (neovim, bun, herdr, yazi, …) to run four
       # hooks. exec_auto_install is the one that does it; task.run_auto_install
       # is turned off to match.
       MISE_EXEC_AUTO_INSTALL: false

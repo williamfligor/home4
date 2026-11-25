@@ -1,5 +1,0 @@
-[tools]
-tmux = "latest"
-
-[dotfiles]
-"~/.tmux.conf" = { source = "dot-tmux.conf", mode = "symlink" }

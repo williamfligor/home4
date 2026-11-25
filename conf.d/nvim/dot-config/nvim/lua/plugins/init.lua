@@ -25,34 +25,43 @@ for _, group in ipairs(which_key_groups) do
   which_key_entries[#which_key_entries + 1] = { "<leader>" .. group[1], group = group[2] }
 end
 
--- fzf.vim pickers: leader suffix, command, description.
+-- fzf-lua pickers: leader suffix, provider, description.
 local fzf_pickers = {
-  { "?", "Maps", "Key maps" },
-  { "bb", "Buffers", "Buffers" },
-  { "ff", "Files", "Find files" },
-  { "pf", "GFiles", "Git files" },
-  { "fr", "History", "Recent files" },
-  { "gs", "GFiles?", "Git modified files" },
+  { "?", "keymaps", "Key maps" },
+  { "bb", "buffers", "Buffers" },
+  { "ff", "files", "Find files" },
+  { "pf", "git_files", "Git files" },
+  { "fr", "oldfiles", "Recent files" },
+  { "gs", "git_status", "Git modified files" },
 }
 
 -- Search the register with ripgrep, minus the word-boundary markers rg rejects.
 local function rg_from_search_register()
   local search = vim.fn.getreg("/"):gsub("^\\<", ""):gsub("\\>$", "")
   if search ~= "" then
-    vim.cmd("Rg " .. search)
+    require("fzf-lua").live_grep({ search = search })
   end
 end
 
 local fzf_keys = {}
 for _, picker in ipairs(fzf_pickers) do
+  local provider = picker[2]
   fzf_keys[#fzf_keys + 1] = {
     "<leader>" .. picker[1],
-    ("<cmd>%s<CR>"):format(picker[2]),
+    function()
+      require("fzf-lua")[provider]()
+    end,
     desc = picker[3],
   }
 end
 fzf_keys[#fzf_keys + 1] = { "<leader>s*", rg_from_search_register, desc = "Rg from search register" }
-fzf_keys[#fzf_keys + 1] = { "<leader>sp", "<cmd>Rg<SPACE>", desc = "Ripgrep search" }
+fzf_keys[#fzf_keys + 1] = {
+  "<leader>sp",
+  function()
+    require("fzf-lua").live_grep()
+  end,
+  desc = "Ripgrep search",
+}
 
 -- gitsigns hunk actions, applied buffer-locally on attach.
 local hunk_actions = {
@@ -158,15 +167,11 @@ return {
   },
 
   -- ── Fuzzy finder ───────────────────────────────────────────
+  -- fzf-lua drives the fzf binary mise already installs (repo-root mise.toml),
+  -- so there is no second copy to download and no build step.
   {
-    "junegunn/fzf",
-    build = ":call fzf#install()",
+    "ibhagwan/fzf-lua",
     lazy = false,
-  },
-  {
-    "junegunn/fzf.vim",
-    lazy = false,
-    dependencies = { "junegunn/fzf" },
     keys = fzf_keys,
   },
 

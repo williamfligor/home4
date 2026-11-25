@@ -174,7 +174,7 @@ else
 fi
 
 echo "[4] plugin loadability..."
-for plugin in lazy lspconfig blink.cmp fzf-lua sidekick snacks; do
+for plugin in lazy lspconfig blink.cmp fzf-lua snacks; do
     result=$(nvim --headless -c "lua local ok, e = pcall(require, \"$plugin\"); if ok then print(\"✓ $plugin loaded\") else print(\"✗ \" .. tostring(e):gsub(\"\\n\",\" \")) end" -c "quit" 2>&1 | grep -E "^[✓✗]")
     echo "  $result"
     case "$result" in *"✗"*) fail=1 ;; esac

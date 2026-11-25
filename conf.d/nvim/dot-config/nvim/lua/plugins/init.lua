@@ -12,7 +12,6 @@ local which_key_groups = {
   { "p", "project" },
   { "w", "window" },
   { "t", "toggle" },
-  { "a", "sidekick" },
   { "e", "location" },
   { "q", "quit" },
   { "s", "search" },
@@ -113,14 +112,6 @@ local function enable_servers()
       end
       vim.lsp.enable(server.name)
     end
-  end
-end
-
--- sidekick CLI bindings; the module is required inside the callback so a key press
--- on an unloaded plugin cannot throw at declaration time.
-local function sidekick(method, arg)
-  return function()
-    require("sidekick.cli")[method](arg)
   end
 end
 
@@ -263,34 +254,6 @@ return {
     cmd = { "Git", "G" },
     keys = {
       { "<leader>gS", "<cmd>Git<cr>", desc = "Git status" },
-    },
-  },
-
-  -- ── Sidekick (AI assistant) ────────────────────────────────
-  {
-    "folke/sidekick.nvim",
-    lazy = false,
-    config = function()
-      require("sidekick").setup({
-        nes = { enabled = false },
-        cli = {
-          mux = {
-            backend = "zellij",
-            enabled = false,
-          },
-        },
-      })
-    end,
-    keys = {
-      { "<C-.>", sidekick("focus"), mode = { "n", "t", "i", "x" }, desc = "Sidekick focus" },
-      { "<leader>aa", sidekick("toggle", { name = "pi" }), desc = "Sidekick toggle" },
-      { "<leader>an", sidekick("new", { name = "pi" }), desc = "Sidekick new CLI" },
-      { "<leader>as", sidekick("select"), desc = "Sidekick select CLI" },
-      { "<leader>ad", sidekick("close"), desc = "Sidekick detach" },
-      { "<leader>at", sidekick("send", { msg = "{this}" }), mode = { "n", "x" }, desc = "Sidekick send this" },
-      { "<leader>af", sidekick("send", { msg = "{file}" }), desc = "Sidekick send file" },
-      { "<leader>av", ":Sidekick cli send<CR>", mode = "x", desc = "Sidekick send selection" },
-      { "<leader>ap", sidekick("prompt"), mode = { "n", "x" }, desc = "Sidekick prompt" },
     },
   },
 

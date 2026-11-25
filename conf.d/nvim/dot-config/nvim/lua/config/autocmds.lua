@@ -42,7 +42,7 @@ local specs = {
     event = "TextYankPost",
     group = groups.HighlightYank,
     callback = function()
-      vim.highlight.on_yank({ higroup = "IncSearch", timeout = 200 })
+      vim.hl.on_yank({ higroup = "IncSearch", timeout = 200 })
     end,
   },
   {

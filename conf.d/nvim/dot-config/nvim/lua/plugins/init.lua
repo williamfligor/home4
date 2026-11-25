@@ -186,13 +186,6 @@ return {
     },
   },
 
-  -- ── Commenting ─────────────────────────────────────────────
-  {
-    "numToStr/Comment.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {},
-  },
-
   -- ── Undotree ───────────────────────────────────────────────
   {
     "mbbill/undotree",
@@ -257,12 +250,6 @@ return {
         implementation = "rust",
       },
     },
-  },
-
-  -- ── EditorConfig ───────────────────────────────────────────
-  {
-    "gpanders/editorconfig.nvim",
-    event = "VeryLazy",
   },
 
   -- ── Git fugitive ───────────────────────────────────────────

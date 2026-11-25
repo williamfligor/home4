@@ -121,5 +121,3 @@ end
 for name, path in pairs(global_paths) do
   vim.g[name] = vim.fn.expand(path)
 end
-
-vim.g.EditorConfig_exclude_patterns = { "fugitive://.*", "scp://.*" }

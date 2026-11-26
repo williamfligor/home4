@@ -44,7 +44,7 @@ conf.d/dotfiles/     ~/.dircolors, ~/.ssh/config, ~/.local/bin
 conf.d/fnox/         fnox + 1Password-backed secret references
 conf.d/git/          delta + difftastic + ~/.gitconfig, ~/.config/git
 conf.d/herdr/        Herdr TUI/core, wake integration, and config files
-conf.d/macos/        macOS .apps + .app install task + macOS-only dotfiles (mise.macos.toml)
+conf.d/macos/        macOS apps + fonts as Homebrew casks, macOS-only dotfiles (mise.macos.toml)
 conf.d/nvim/         neovim
 conf.d/rex/          rex-agent-resume integration (requires Rex)
 conf.d/termux/       ~/.termux (mise.android.toml)
@@ -124,4 +124,4 @@ in `~/.local.sh` or tracked files.
 - Linux baseline is glibc ≥ 2.39 (Ubuntu 24.04+ / Debian trixie+); yazi's official binaries won't start on older glibc.
 - Termux needs `MISE_ENV=android`; Termux may report os=linux, so `mise.linux.toml` stays empty.
 - `~/.pi`, `~/.config/nvim/lazy-lock.json` etc. are runtime state — not managed, never linked as whole dirs.
-- Mac .app bundles are installed via the `http:` tools in `conf.d/macos/mise.macos.toml` plus `conf.d/macos/tasks/install-macos-apps` after first login.
+- Mac apps and fonts are Homebrew casks in `conf.d/macos/mise.macos.toml`, installed without Homebrew. Apps land in `~/Applications`, and an identical bundle already there is adopted rather than replaced. Orca and Sheprd come from vendor taps, which need a second `mise bootstrap` on a bare machine.

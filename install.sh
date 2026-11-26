@@ -16,7 +16,7 @@ if [[ ! -x "${HOME}/.local/bin/mise" ]]; then
 else
     echo "=== mise already installed at ${HOME}/.local/bin/mise ==="
 fi
-export PATH="${HOME}/.local/bin:$PATH"
+export PATH="${HOME}/.local/bin:/opt/homebrew/bin:$PATH"
 
 if [[ -d "${HOME}/.config/mise" ]] && [[ ! -d "${HOME}/.config/mise/.git" ]]; then
     echo "ERROR: ~/.config/mise exists and is not a git clone of this repo." >&2
@@ -27,10 +27,11 @@ fi
 
 echo "=== mise bootstrap --adopt ${REPO_URL} ==="
 # Select the platform config fragments for this bootstrap.
-MISE_AUTO_ENV=true mise bootstrap --adopt "${REPO_URL}" --yes
+#
+# Twice on a bare machine: the first pass pours the Ruby the Orca and Sheprd
+# casks are read with, the second installs them.
+MISE_AUTO_ENV=true mise bootstrap --adopt "${REPO_URL}" --yes || true
+MISE_AUTO_ENV=true mise bootstrap --yes
 
 echo ""
 echo "Done. Open a new shell (env.sh activates mise via ~/.zshenv)."
-# NOTE: backticks must be escaped/single-quoted — inside double quotes bash
-# would execute `mise run install-macos-apps` here instead of printing it.
-echo 'macOS: run `mise run install-macos-apps` after first login to install .app bundles'

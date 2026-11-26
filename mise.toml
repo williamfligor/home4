@@ -1,8 +1,8 @@
 # Global mise configuration for williamfligor/home4.
 # Bundle layout and source resolution are documented in README.md.
 
-# Floor for `mise bootstrap --adopt`. Do not lower.
-min_version = "2026.9.14"
+# Floor for `mise bootstrap --adopt`. Do not lower: brew-cask `appdir` needs 2026.10.0.
+min_version = "2026.11.14"
 
 [settings]
 go_set_gobin = true

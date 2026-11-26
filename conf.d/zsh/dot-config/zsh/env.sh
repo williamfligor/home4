@@ -19,6 +19,12 @@ fi
 # User-installed binaries go ahead of everything already on PATH.
 export PATH="$HOME/.local/bin:$PATH"
 
+# macOS: brew-cask only tests the first ruby on PATH, so the one mise pours for
+# the Orca and Sheprd taps has to win over /usr/bin/ruby.
+if [[ "$OSTYPE" == darwin* ]]; then
+  export PATH="/opt/homebrew/bin:$PATH"
+fi
+
 # mise owns the rest of PATH; --shims keeps activation to a single eval line.
 eval "$(mise activate zsh --shims)"
 

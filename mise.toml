@@ -6,7 +6,6 @@ min_version = "2026.11.14"
 
 [settings]
 go_set_gobin = true
-always_keep_download = true
 dotfiles.default_mode = "symlink"
 # mise updates itself: checked daily, installed before the next interactive
 # command (mise skips the check in CI, offline and non-interactive sessions).

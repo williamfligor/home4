@@ -8,6 +8,12 @@ min_version = "2026.11.14"
 go_set_gobin = true
 always_keep_download = true
 dotfiles.default_mode = "symlink"
+# mise updates itself: checked daily, installed before the next interactive
+# command (mise skips the check in CI, offline and non-interactive sessions).
+# An interactive shell keeps the binary it started with; the following command
+# gets the new one. Paired with minimum_release_age = "0s" below, so updates
+# are not held back a release cycle.
+self_update.auto = "1d"
 self_update.minimum_release_age = "0s"
 
 [tools]

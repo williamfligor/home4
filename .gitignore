@@ -5,3 +5,4 @@ __pycache__/
 .pi-subagents/
 .pi/
 *.local.toml
+*.local.lock

@@ -13,11 +13,12 @@ the checks, re-stage whatever they rewrote, run them again, and only commit once
 they exit clean. `git commit --no-verify` is never the answer; a hook that refuses
 to pass is a finding to report, not a step to skip.
 
-**Two JSON files belong to their applications.** They are written by the apps
-themselves and deliberately kept out of restyling:
-`conf.d/ai/dot-pi/agent/settings.json` and
-`conf.d/ai/dot-pi/agent/pi-blackhole/pi-blackhole-config.json`. Do not reformat
-them by hand. `mise*.toml` is likewise skipped by `check-toml`, because mise
+**App-owned files are listed in `.prettierignore`.** Pi's `settings.json`,
+`auth.json` and pi-blackhole config, herdr-app's `settings.json`, `keys.json` and
+`layouts/`, and mise's generated locks are written by their applications or by mise;
+do not reformat them by hand. That file is the only place formatter exclusions
+belong, and `prek.toml` keeps exclusions only for the byte-level hooks (pi writes no
+trailing newline). `mise*.toml` is likewise skipped by `check-toml`, because mise
 accepts TOML 1.1 multiline inline tables that a 1.0 parser rejects.
 
 **Content is authored here, never copied.** No text is taken from another

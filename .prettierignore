@@ -1,0 +1,18 @@
+# Do not put formatter exclusions in prek.toml: this list is what `mise run check`,
+# editors and prettier run by hand all read.
+
+# App-owned JSON, written in place by the app's own serializer, so a prettier
+# rewrite is a diff the app undoes on its next save.
+conf.d/ai/dot-pi/agent/settings.json
+conf.d/ai/dot-pi/agent/auth.json
+conf.d/ai/dot-pi/agent/pi-blackhole/pi-blackhole-config.json
+
+# herdr-app: keys reordered per write, numbers as floats (`font_size: 11.0`).
+conf.d/herdr/dot-herdr-app/settings.json
+conf.d/herdr/dot-herdr-app/keys.json
+conf.d/herdr/dot-herdr-app/layouts/
+
+# mise's npm provenance: mise.lock pins the sha256 of each locks/*/aube-lock.yaml.
+locks/
+mise.lock
+mise.macos.lock

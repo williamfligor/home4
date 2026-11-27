@@ -5,11 +5,32 @@
 
 local opt = vim.opt
 
+-- Clipboard is OSC 52: the escape is written by the terminal that owns the
+-- window, so it works over ssh where no local provider exists. Paste reads return
+-- empty rather than stall a terminal that never answers them.
+local clipboard = "unnamedplus"
+if not (vim.env.WAYLAND_DISPLAY or vim.env.DISPLAY) then
+  local osc52 = require("vim.ui.clipboard.osc52")
+  vim.g.clipboard = {
+    name = "osc52",
+    copy = { ["+"] = osc52.copy("+"), ["*"] = osc52.copy("*") },
+    paste = {
+      ["+"] = function()
+        return {}
+      end,
+      ["*"] = function()
+        return {}
+      end,
+    },
+  }
+  clipboard = "unnamed"
+end
+
 -- Plain assignments, grouped by intent.
 local groups = {
   behaviour = {
     mouse = "a",
-    clipboard = "unnamedplus",
+    clipboard = clipboard,
     completeopt = { "menuone", "noselect", "noinsert" },
     modeline = true,
     modelines = 15,

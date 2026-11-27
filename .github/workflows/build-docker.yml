@@ -29,7 +29,7 @@ jobs:
           # Config files drive the cached tool-install layer; the repo clone at
           # ~/.config/mise mirrors the config layout (repo-root mise.toml plus
           # the conf.d bundles; the tool-cache layer uses MISE_CONFIG_DIR).
-          key: buildx-${{ runner.os }}-${{ hashFiles('.Dockerfile', '.dockerignore', 'mise.toml', 'mise.linux.toml', '.miserc.toml', 'mise.lock', 'mise.macos.lock', 'conf.d/*/mise*.toml') }}
+          key: buildx-${{ runner.os }}-${{ hashFiles('.Dockerfile', '.dockerignore', 'mise.toml', 'mise.linux.toml', '.miserc.toml', 'mise.lock', 'mise.macos.lock', 'conf.d/*/mise*.toml', 'locks/**') }}
           restore-keys: |
             buildx-${{ runner.os }}-
 

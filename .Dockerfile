@@ -23,6 +23,10 @@ RUN curl -fsSL https://mise.run | MISE_SELF_UPDATE_MINIMUM_RELEASE_AGE=0s sh && 
 # mise expects to expose through its shim.
 COPY mise.toml mise.linux.toml mise.lock mise.macos.lock .miserc.toml /tmp/cfg/
 COPY conf.d /tmp/cfg/conf.d/
+# mise.lock pins npm provenance by path relative to the config root (the
+# `locks/<tool>/<version>` sidecars it verifies), so /tmp/cfg needs them too —
+# a config dir with only the .toml files cannot install an npm tool.
+COPY locks /tmp/cfg/locks/
 RUN --mount=type=secret,id=github_token \
     --mount=type=cache,target=/root/.cache/mise,sharing=locked \
     export PATH="$HOME/.local/bin:$PATH" && \

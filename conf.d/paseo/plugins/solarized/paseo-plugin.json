@@ -1,0 +1,8 @@
+{
+    "id": "solarized",
+    "name": "Solarized",
+    "media": [],
+    "requirements": {
+        "paseo": ">=0.16.0"
+    }
+}

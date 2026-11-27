@@ -47,7 +47,7 @@ conf.d/herdr/        Herdr TUI/core, wake integration, config, and herdr-fork
 conf.d/macos/        macOS apps + fonts as Homebrew casks, macOS-only dotfiles (mise.macos.toml)
 conf.d/nvim/         neovim
 conf.d/orca/         Orca keybindings + macOS app
-conf.d/paseo/        Paseo CLI + Linux daemon service
+conf.d/paseo/        Paseo CLI, Linux daemon service, Solarized theme plugin
 conf.d/rex/          rex-agent-resume integration (requires Rex)
 conf.d/termux/       ~/.termux (mise.android.toml)
 conf.d/yazi/         yazi

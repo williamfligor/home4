@@ -1,0 +1,4 @@
+# macOS-only Orca app.
+
+[bootstrap.packages]
+"brew-cask:stablyai/orca/orca" = { adopt = true, appdir = "~/Applications", os = "macos" }

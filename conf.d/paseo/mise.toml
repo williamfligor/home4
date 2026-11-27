@@ -1,0 +1,4 @@
+# Paseo CLI. State and configuration live in ~/.paseo.
+
+[tools]
+"npm:@getpaseo/cli" = { version = "latest", minimum_release_age = "0s" }

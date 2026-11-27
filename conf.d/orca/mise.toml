@@ -1,0 +1,4 @@
+# Orca configuration shared by Linux and macOS.
+
+[dotfiles]
+"~/.orca/keybindings.json" = { source = "dot-orca/keybindings.json", mode = "symlink" }

@@ -1,0 +1,17 @@
+# Paseo daemon. The CLI is installed from [tools] in mise.toml; the user
+# service waits for it with requires_tools. Paseo state stays in ~/.paseo.
+
+[bootstrap.services.paseo]
+scope = "user"
+description = "Paseo agent daemon"
+command = "~/.local/share/mise/shims/paseo daemon run --home %h/.paseo"
+working_directory = "~"
+environment = {
+  PASEO_HOME = "%h/.paseo",
+  PATH = "%h/.pi/agent/bin:%h/.local/share/mise/shims:%h/.local/bin:/usr/local/bin:/usr/bin:/bin",
+  TERM = "xterm-256color",
+}
+restart = "on-failure"
+requires_tools = true
+enabled = true
+state = "running"

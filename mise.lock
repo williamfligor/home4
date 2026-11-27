@@ -2004,6 +2004,12 @@ specifiers = ["latest"]
 [tools."npm:@earendil-works/pi-coding-agent".provenance]
 repository = "github.com/earendil-works/pi"
 
+[[tools."npm:@getpaseo/cli"]]
+version = "0.18.0"
+aube = { path = "locks/npm-getpaseo-cli/0.18.0", digest = "sha256:8e6a75eb2815ea19325ee081c69c300bc8bbd3f6452f00ca6731a2d0c62ffc1c" }
+backend = "npm:@getpaseo/cli"
+specifiers = ["latest"]
+
 [[tools."npm:prettier"]]
 version = "3.9.10"
 aube = { path = "locks/npm-prettier/3.9.10", digest = "sha256:0a52cf3e98ebe971f9f0c338c08e668756d290a8d14fe3fd308251084fba1522" }

@@ -12,7 +12,6 @@
 "brew-cask:jordanbaird-ice" = { adopt = true, appdir = "~/Applications", os = "macos" }
 "brew-cask:rectangle" = { adopt = true, appdir = "~/Applications", os = "macos" }
 "brew-cask:stats" = { adopt = true, appdir = "~/Applications", os = "macos" }
-"brew-cask:stablyai/orca/orca" = { adopt = true, appdir = "~/Applications", os = "macos" }
 "brew-cask:sheprd-labs/tap/sheprd" = { adopt = true, appdir = "~/Applications", os = "macos" }
 
 "brew-cask:font-jetbrains-mono-nerd-font" = { os = "macos" }
@@ -24,8 +23,4 @@
 
 [dotfiles."~/.config/ghostty"]
 source = "dot-config/ghostty"
-mode = "symlink"
-
-[dotfiles."~/.orca/keybindings.json"]
-source = "dot-orca/keybindings.json"
 mode = "symlink"

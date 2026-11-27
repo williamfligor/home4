@@ -38,6 +38,9 @@ herdr = { version = "latest", minimum_release_age = "0h" }
 "~/.config/herdr/config.toml" = { source = "dot-config/herdr/config.toml", mode = "copy" }
 "~/.config/herdr/config-gpui.local.toml" = { source = "dot-config/herdr/config-gpui.local.toml", mode = "copy" }
 
+# Pi extension: fork the current session into a Herdr tab or hc terminal.
+"~/.pi/agent/extensions/herdr-fork.ts" = { source = "dot-pi/agent/extensions/herdr-fork.ts", mode = "symlink" }
+
 # Explicit setup: installation also edits agent configs and the boot service.
 [tasks."setup:herdr-wake"]
 description = "Wire herdr-wake into herdr-core, the agents and the boot service"

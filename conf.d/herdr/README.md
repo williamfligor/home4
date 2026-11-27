@@ -19,6 +19,8 @@ herdr-core` so the mise-managed install remains authoritative.
   `mods/` directory, where Herdr App can create editor-support files.
 - The two files under `~/.config/herdr/` are copies because the TUI rewrites
   them as whole files. Capture edits with `mise dotfiles add --changed`.
+- `~/.pi/agent/extensions/herdr-fork.ts` belongs here rather than to the Pi
+  bundle, because it only acts inside Herdr or Herdr Core.
 
 ## Runtime paths and setup
 

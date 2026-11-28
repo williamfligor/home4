@@ -12,6 +12,17 @@
  * git-ignored), so no hostname lives in this repo. LLAMA_API_KEY is optional
  * and is sent as a bearer token when set.
  *
+ * A shell env is not always there: the paseo and herdr daemons spawn pi from
+ * systemd with a fixed Environment= list, so a session started from the phone
+ * (or any daemon-launched session) sees no LLAMA_BASE_URL and used to fall back
+ * to the localhost default — nothing is listening there, so the first request
+ * failed as `ECONNREFUSED 127.0.0.1:9931`. No extra config file for that: the
+ * endpoint pi itself persisted in models-store.json is reused, since every model
+ * entry carries the baseUrl it was registered with. Precedence: env, then the
+ * persisted catalog, then the localhost default. A machine that has never had
+ * the env set has no persisted catalog either, so it still needs LLAMA_BASE_URL
+ * once (a models.json stub cannot carry the hostname — that file is tracked).
+ *
  * The catalog is persisted to models-store.json, so model selection and
  * `pi --list-models` work offline and before the first refresh completes.
  *
@@ -40,9 +51,16 @@ interface LlamaSwapEntry {
     meta?: { n_ctx?: number };
 }
 
+/**
+ * Endpoint learned from the catalog pi persisted last time, for launch paths
+ * that carry no shell env (systemd-spawned daemons). Set from `stored.models`
+ * before the first fetch, so it also applies to that fetch.
+ */
+let learnedServerUrl: string | undefined;
+
 /** LLAMA_BASE_URL without a trailing slash or /v1, so both forms work. */
 function serverRoot(): string {
-    const configured = process.env.LLAMA_BASE_URL?.trim() || DEFAULT_SERVER_URL;
+    const configured = process.env.LLAMA_BASE_URL?.trim() || learnedServerUrl || DEFAULT_SERVER_URL;
     return configured.replace(/\/+$/u, "").replace(/\/v1$/u, "");
 }
 
@@ -151,6 +169,10 @@ export default function llamaSwap(pi: ExtensionAPI) {
         async refreshModels({ allowNetwork, signal, stored, publish }) {
             const restored = (stored?.models ?? []).filter(isChatModel);
             if (restored.length > 0) {
+                if (!process.env.LLAMA_BASE_URL?.trim()) {
+                    learnedServerUrl = restored[0]?.baseUrl;
+                    provider.baseUrl = inferenceUrl();
+                }
                 await publish({ update: () => (catalog = restored) });
             }
             if (!allowNetwork || signal.aborted) return;

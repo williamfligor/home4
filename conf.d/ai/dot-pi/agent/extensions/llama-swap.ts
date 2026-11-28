@@ -180,6 +180,17 @@ export default function llamaSwap(pi: ExtensionAPI) {
                 const entries = await fetchCatalog(signal);
                 if (signal.aborted) return;
                 const refreshed = entries.map(toModel).sort((left, right) => left.id.localeCompare(right.id));
+                // A 200 with zero usable models is not a catalog: llama-swap does
+                // that mid-restart, and a proxy can return a valid-looking empty
+                // payload. Persisting it would overwrite the good catalog in
+                // models-store.json and leave a later cold start with nothing.
+                if (refreshed.length === 0) {
+                    if (catalog.length > 0) {
+                        console.warn("llama-swap: keeping the previous catalog (empty response)");
+                        return;
+                    }
+                    throw new Error("llama-swap returned no usable models");
+                }
                 await publish({
                     persist: { models: refreshed, checkedAt: Date.now() },
                     update: () => (catalog = refreshed),

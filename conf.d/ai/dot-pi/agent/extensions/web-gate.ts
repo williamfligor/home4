@@ -30,7 +30,7 @@
  * /reload — globalThis state survives a reload, pi's registrations do not.
  */
 
-import type { ExtensionAPI, ExtensionContext } from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 
 const STATE_KEY = "__pi_web_gate";
 const ENV_KEY = "PI_WEB_ON";

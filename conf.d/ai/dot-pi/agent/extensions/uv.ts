@@ -20,8 +20,8 @@
  * - python/python3: python -m pip/venv/py_compile blocked, suggestions for uv equivalents
  */
 
-import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
-import { isToolCallEventType } from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { isToolCallEventType } from "@earendil-works/pi-coding-agent";
 
 function getBlockedCommandMessage(command: string): string | null {
     // Match commands at the start of a shell segment (start/newline/; /&& /|| /|)
